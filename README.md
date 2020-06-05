@@ -99,9 +99,14 @@
     
 **Code**
 1. updates/views.py
-    - create function based view: update_model_detail_view and user JsonResponse to convert python dict to JSON dict.
+    - create function based view: json_dummy_view and user JsonResponse to convert python dict to JSON dict.
 2. updates/urls.py:
     - map endpoint to fn view.
 3. Test on browser:
-    - http://localhost:8000/updates/
+    - http://localhost:8000/dummy/
     - Install chrome extension JSONView to format JSON.
+
+### 2.12 Sending JSON data with HttpResponse and json library - alternate to JsonResponse
+1. updates/views.py
+    - use json library from python to convert python dict into JSON dict
+    - use HttpResponse to send the response back
