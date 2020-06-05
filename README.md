@@ -110,3 +110,10 @@
 1. updates/views.py
     - use json library from python to convert python dict into JSON dict
     - use HttpResponse to send the response back
+
+### 2.13 Create a Class based View - for JSON endpoint
+1. updates/views.py:
+    - Create JsonDummyCBV
+    - use django.views.generic ---> View: and return json response from get method
+2. updates/urls.py:
+    - map JsonDummyCBV.as_view() in url endpoint

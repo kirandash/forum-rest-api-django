@@ -1,8 +1,9 @@
 # using json library from python
 import json
-# from django.http import JsonResponse, HttpResponse
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
 # from django.shortcuts import render
+# to create class based view
+from django.views.generic import View
 
 from .models import Update
 
@@ -28,3 +29,14 @@ def json_dummy_view(request):
     return HttpResponse(json_data, content_type='application/json')
     # JsonResponse converts python dictionary into JSON dictionary
     # return JsonResponse(data)
+
+
+class JsonDummyCBV(View):
+    """URL for a dummy REST API - GET method"""
+    def get(self, request):
+        data = {
+            "title": "this is a dummy title",
+            "count": 9600,
+            "content": "Some dummy content"
+        }
+        return JsonResponse(data)

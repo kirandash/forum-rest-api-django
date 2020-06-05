@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from updates.views import json_dummy_view
+from updates.views import json_dummy_view, JsonDummyCBV
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('dummy/', json_dummy_view)
+    path('dummy/', json_dummy_view),
+    path('dummy-two/', JsonDummyCBV.as_view())
 ]
