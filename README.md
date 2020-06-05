@@ -143,3 +143,8 @@
     - updates/models.py: 
         - serialize entire model, serialize a single model instance
 2. Cleaner view + Code re-usability
+
+### 2.17 Change serialize manager and method for better JSON structure
+1. updates/models.py
+    - convert serialized data into structured data and return everything from under fields
+2. Test both list and detail endpoint

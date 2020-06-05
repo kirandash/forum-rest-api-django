@@ -1,3 +1,4 @@
+import json
 from django.core.serializers import serialize
 # user model to be extracted from django.conf - settings
 from django.conf import settings
@@ -10,9 +11,19 @@ def upload_update_image(instance, filename):
 
 class UpdateQuerySet(models.QuerySet):
     # serialize entire model
+    # def serialize(self):
+    #     qs = self
+    #     return serialize('json', qs, fields=('user', 'content', 'image'))
+
     def serialize(self):
         qs = self
-        return serialize('json', qs, fields=('user', 'content', 'image'))
+        final_array = []
+        count = 0
+        for obj in qs:
+            stuct = json.loads(obj.serialize())
+            final_array.append(stuct)
+        return json.dumps(final_array)
+        # return serialize('json', qs, fields=('user', 'content', 'image'))
 
 
 class UpdateManager(models.Manager):
@@ -39,4 +50,12 @@ class Update(models.Model):
 
     # serialize an instance of model
     def serialize(self):
-        return serialize("json", [self], fields=('user', 'content', 'image'))
+        json_data = serialize("json", [self],
+                              fields=('user', 'content', 'image'))
+        # convert JSON data into python usable code ie. [{}] (structure)
+        # [{}] a list of a dictionary
+        stuct = json.loads(json_data)
+        print(stuct)
+        # removes model, pk and returns everything under the fields
+        data = json.dumps(stuct[0]['fields'])
+        return data
