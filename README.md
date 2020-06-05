@@ -117,7 +117,7 @@
     - use django.views.generic ---> View: and return json response from get method
 2. updates/urls.py:
     - map JsonDummyCBV.as_view() in url endpoint
-3. Test on browser at: http://localhost:8000/dummy-cbv/
+3. Test on browser at: http://localhost:8000/dummy/cbv/
 
 ### 2.14 Mixins with CBVs
 1. Mixin: A mixin is used to hold the common code among classes. Ex: We will hold the common code to send JSON response.
@@ -125,4 +125,15 @@
     - Create JsonResponseMixin to have to common code to send JSON response
 3. updates/views.py:
     - Use mixin with JsonDummyCBVWithMixin
-4. Test on browser at: http://localhost:8000/dummy-mixin/
+4. Test on browser at: http://localhost:8000/dummy/mixin/
+
+### 2.15 Serialize Data with django.core.serializers
+1. Serializing data: Converting data from one structure to another is called serializing data.
+2. updates/views.py
+    - 
+3. Run **Fixture** to see serialized data of application:
+    - `python manage.py dumpdata --format json --indent 4` : returns all data of our app
+    - `python manage.py dumpdata updates.update --format json --indent 4` : returns data from updates app update model only. (Make sure to add few update items in admin)
+4. Test on browser at: 
+    - http://localhost:8000/dummy/serializer/detail/, 
+    - http://localhost:8000/dummy/serializer/list/ - check with all fields and specific fields
