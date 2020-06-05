@@ -10,20 +10,28 @@ def upload_update_image(instance, filename):
 
 
 class UpdateQuerySet(models.QuerySet):
-    # serialize entire model
+    # serialize entire model - list view
     # def serialize(self):
     #     qs = self
     #     return serialize('json', qs, fields=('user', 'content', 'image'))
 
+    # serialize entire model - list view
+    # def serialize(self):
+    #     qs = self
+    #     final_array = []
+    #     count = 0
+    #     for obj in qs:
+    #         stuct = json.loads(obj.serialize())
+    #         final_array.append(stuct)
+    #     return json.dumps(final_array)
+    #     # return serialize('json', qs, fields=('user', 'content', 'image'))
+
+    # serialize entire model - list view
     def serialize(self):
-        qs = self
-        final_array = []
-        count = 0
-        for obj in qs:
-            stuct = json.loads(obj.serialize())
-            final_array.append(stuct)
-        return json.dumps(final_array)
-        # return serialize('json', qs, fields=('user', 'content', 'image'))
+        # dot values method - self.values
+        list_values = list(self.values("user", "content", "image"))
+        print(list_values)
+        return json.dumps(list_values)
 
 
 class UpdateManager(models.Manager):
@@ -48,14 +56,29 @@ class Update(models.Model):
     def __str__(self):
         return self.content or ""
 
-    # serialize an instance of model
+    # serialize an instance of model - for detail view
+    # def serialize(self):
+    #     json_data = serialize("json", [self],
+    #                           fields=('user', 'content', 'image'))
+    #     # convert JSON data into python usable code ie. [{}] (structure)
+    #     # [{}] a list of a dictionary
+    #     stuct = json.loads(json_data)
+    #     print(stuct)
+    #     # removes model, pk and returns everything under the fields
+    #     data = json.dumps(stuct[0]['fields'])
+    #     return data
+
+    # serialize an instance of model - for detail view - with mapping
     def serialize(self):
-        json_data = serialize("json", [self],
-                              fields=('user', 'content', 'image'))
-        # convert JSON data into python usable code ie. [{}] (structure)
-        # [{}] a list of a dictionary
-        stuct = json.loads(json_data)
-        print(stuct)
-        # removes model, pk and returns everything under the fields
-        data = json.dumps(stuct[0]['fields'])
+        try:
+            image = self.image.url
+        except:
+            image = ""
+
+        data = {
+            "content": self.content,
+            "user": self.user.id,
+            "image": image
+        }
+        data = json.dumps(data)
         return data

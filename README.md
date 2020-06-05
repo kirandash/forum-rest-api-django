@@ -148,3 +148,10 @@
 1. updates/models.py
     - convert serialized data into structured data and return everything from under fields
 2. Test both list and detail endpoint
+
+### 2.18 Serialize List with The Dot values method and refactor detail view
+1. Refactor JSON structure in updates/models.py using dot values method on a queryset
+    - use self.values to get all the values and then dump into json
+2. Test at: http://localhost:8000/dummy/serializer/list/
+3. Refactor detail serializer as well in models.py file by not using any structure and directly mapping fields to JSON structure.
+4. Test at: http://localhost:8000/dummy/serializer/detail/
