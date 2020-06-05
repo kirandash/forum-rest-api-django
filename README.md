@@ -137,3 +137,9 @@
 4. Test on browser at: 
     - http://localhost:8000/dummy/serializer/detail/, 
     - http://localhost:8000/dummy/serializer/list/ - check with all fields and specific fields
+
+### 2.16 Managers and Methods to serialize data in model instead of view
+1. Move the serializing code from view to a callable method in models.py file.
+    - updates/models.py: 
+        - serialize entire model, serialize a single model instance
+2. Cleaner view + Code re-usability

@@ -60,28 +60,28 @@ class SerializedDetailView(View):
     """URL for a dummy REST API - GET method with serialization"""
     def get(self, request):
         obj = Update.objects.get(id=1)
-        data = serialize("json", [obj], fields=('user', 'content'))
+        # data = serialize("json", [obj], fields=('user', 'content'))
         # data = {
         #     "user": obj.user.username,
         #     "content": obj.content
         # }
         # json_data = json.dumps(data)
-        json_data = data
+        json_data = obj.serialize()
         return HttpResponse(json_data, content_type='application/json')
 
 
 class SerializedListView(View):
     def get(self, request):
         # query set
-        qs = Update.objects.all()
+        # qs = Update.objects.all()
         # serialize: format, query string, fields to serialize
         # serialize does the same as the below mentioned fixture:
         # python manage.py dumpdata updates.update --format json --indent 4
         # data = serialize("json", qs)
         # if no fields mentioned, serializer wl return all fields
-        data = serialize("json", qs, fields=('user', 'content'))
-        print(data)
+        # data = serialize("json", qs, fields=('user', 'content'))
+        # print(data)
         # no need to json dump, as we already formatted to json with serialize
         # json_data = json.dumps(data)
-        json_data = data
+        json_data = Update.objects.all().serialize()
         return HttpResponse(json_data, content_type='application/json')
