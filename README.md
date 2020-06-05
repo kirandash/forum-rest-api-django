@@ -29,6 +29,7 @@
     - Not a minimal framework like Flask. As it comes with many built in features. So with Django, our project might have features that we don't even need.
     - lesser control over the functionality. Since many features are built in. It will behave as per Django providing lesser control to us.
 5. In this app, we will use Django only for backend and React for frontend.
+6. Note: For production projects: always better to choose LTS version which is 2.2 right now for Django. Check LTS version at: https://www.djangoproject.com/download/
 
 ### 2.2 Explore 3 ways to Install Python
 1. Only Python: https://www.python.org/downloads/. In our case: we will download this one. Let's see 2 more options:
@@ -155,3 +156,20 @@
 2. Test at: http://localhost:8000/dummy/serializer/list/
 3. Refactor detail serializer as well in models.py file by not using any structure and directly mapping fields to JSON structure.
 4. Test at: http://localhost:8000/dummy/serializer/detail/
+
+## 3. Creating API with djangorestframework
+### 3.1 Install Django Rest Framework
+1. Go to https://www.django-rest-framework.org/ and check for requirements.
+2. Install drf: follow installation guides
+    - From venv: `pip install djangorestframework`
+    - `pip install markdown` gives Markdown support for the browsable API.
+    - `pip install django-filter` gives Filtering support
+3. Note: after every new installation - save your requirements file with: `pip freeze > requirements.txt`
+4. Add 'rest_framework' to INSTALLED_APPS
+
+### 3.2 Create status app, Add model, manager
+1. Create app: `python manage.py startapp status`
+2. Add status to settings.py file
+3. Create Status model in status/models.py file
+4. makemigrations and migrate
+5. Register model to admin
