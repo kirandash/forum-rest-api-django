@@ -4,8 +4,9 @@ from django.http import JsonResponse, HttpResponse
 # from django.shortcuts import render
 # to create class based view
 from django.views.generic import View
+from forum.mixins import JsonResponseMixin
 
-from .models import Update
+# from .models import Update
 
 
 # def detail_view(request):
@@ -35,8 +36,19 @@ class JsonDummyCBV(View):
     """URL for a dummy REST API - GET method"""
     def get(self, request):
         data = {
-            "title": "this is a dummy title",
-            "count": 9600,
-            "content": "Some dummy content"
+            "title": "this is CBV dummy title",
+            "count": 432,
+            "content": "Some CBV dummy content"
         }
         return JsonResponse(data)
+
+
+class JsonDummyCBVWithMixin(JsonResponseMixin, View):
+    """URL for a dummy REST API - GET method"""
+    def get(self, request):
+        data = {
+            "title": "this is Mixin dummy title",
+            "count": 12,
+            "content": "Some Mixin dummy content"
+        }
+        return self.render_to_json_response(data)

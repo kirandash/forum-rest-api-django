@@ -117,3 +117,12 @@
     - use django.views.generic ---> View: and return json response from get method
 2. updates/urls.py:
     - map JsonDummyCBV.as_view() in url endpoint
+3. Test on browser at: http://localhost:8000/dummy-cbv/
+
+### 2.14 Mixins with CBVs
+1. Mixin: A mixin is used to hold the common code among classes. Ex: We will hold the common code to send JSON response.
+2. Create forum/mixins.py:
+    - Create JsonResponseMixin to have to common code to send JSON response
+3. updates/views.py:
+    - Use mixin with JsonDummyCBVWithMixin
+4. Test on browser at: http://localhost:8000/dummy-mixin/
