@@ -91,3 +91,17 @@
 3. `python manage.py makemigrations` and `python manage.py migrate`
 4. Run or `python manage.py runserver`
 5. Check at http://127.0.0.1:8000/admin/ or http://localhost:8000/admin/ - should show Updates under admin
+
+### 2.11 Send JSON response with JsonResponse from django.http 
+**Theory**
+1. Once we have created a model, now we can create views. In default Django: under view, we normally render an HTML file. In our case since we are going to create an API we will return a response in JSON/XML format. Since JSON is a far better and popular approach, we will use JSON format for our response data.
+    - JSON format also is far more easy to work with frontend frameworks viz react or angular. Since JSON is easily handled with JS. As JSON itself is JavaScript Object Notation.
+    
+**Code**
+1. updates/views.py
+    - create function based view: update_model_detail_view and user JsonResponse to convert python dict to JSON dict.
+2. updates/urls.py:
+    - map endpoint to fn view.
+3. Test on browser:
+    - http://localhost:8000/updates/
+    - Install chrome extension JSONView to format JSON.
