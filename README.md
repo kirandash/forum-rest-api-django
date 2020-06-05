@@ -90,4 +90,4 @@
 2. Register models to admin with `admin.site.register()`
 3. `python manage.py makemigrations` and `python manage.py migrate`
 4. Run or `python manage.py runserver`
-5. Check at http://127.0.0.1:8000/admin/ or http://localhost:8000/admin/
+5. Check at http://127.0.0.1:8000/admin/ or http://localhost:8000/admin/ - should show Updates under admin
