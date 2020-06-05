@@ -71,3 +71,14 @@
     - Add Configuration ---> Add script path to manage.py, working directory path and parameters: runserver.
     - Click on Create configuration - apply and save
     - Click on green play icon to run server
+
+### 2.8 Create new App, run migrations
+1. The project folder forum_project is basically a container for all the apps that we can have on our website. Each module can be specified as an app which will perform a specific task.
+2. Create app: `python manage.py startapp updates` or `django-admin startapp updates`
+3. Add updates to list of INSTALLED_APPS
+4. create migrations: `python manage.py makemigrations`
+5. Apply migrations: `python manage.py migrate`
+6. check migration: `python manage.py showmigrations`
+
+### 2.9 create superuser
+1. `python manage.py createsuperuser` - kiran, django1234
