@@ -26,3 +26,8 @@ class Status(models.Model):
 
     def __str__(self):
         return str(self.content)[:50]
+
+    class Meta:
+        # Names to show in admin: By default - status, statuss
+        verbose_name = 'Status post'
+        verbose_name_plural = 'Status posts'

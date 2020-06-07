@@ -173,3 +173,15 @@
 3. Create Status model in status/models.py file
 4. makemigrations and migrate
 5. Register model to admin
+
+### 3.3 Overwrite default admin form with ModelForm for validations
+1. status/models.py
+    - Add singular and plural labels/verbose_name
+2. In admin: create a status post. And you will see that, only user is mandatory. To make content and image also mandatory we will add form validations. (using django forms) Also we will add number of character validations.
+3. Create status/forms.py file.
+    - Add StatusForm class from forms.ModelForm to create form validation.
+4. status/admin.py
+    - add StatusForm to admin
+5. Test list display at: http://localhost:8000/admin/status/status/
+6. Create a new status to check validation. Form should not submit with blank content & image. At lease one has to be provided.
+7. We have implemented simple validations. But the same approach can be used to create complex, custom validations for model fields that Django does not provide out of the box.
