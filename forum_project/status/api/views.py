@@ -76,3 +76,21 @@ class StatusDetailAPIView(generics.RetrieveAPIView):
     #     kwargs = self.kwargs
     #     kw_id = kwargs.get('id')
     #     return Status.objects.get(id=kw_id)
+
+
+class StatusUpdateAPIView(generics.UpdateAPIView):
+    permission_classes = []
+    authentication_classes = []
+    # using default query set with API View
+    queryset = Status.objects.all()
+    serializer_class = StatusSerializer
+    # lookup_field not required since pk is used in urls.py file
+
+
+class StatusDeleteAPIView(generics.DestroyAPIView):
+    permission_classes = []
+    authentication_classes = []
+    # using default query set with API View
+    queryset = Status.objects.all()
+    serializer_class = StatusSerializer
+    lookup_field = 'id'  # to map with id in url or mention pk string in url

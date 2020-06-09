@@ -297,3 +297,14 @@
         - use 'pk' in url. It will map to view automatically
         - use lookupfield if not using 'pk' in url
         - overwrite get_object method and filter using kwargs
+2. Test at: http://localhost:8000/api/status/8/
+
+### 3.11 Update & Delete with generics.UpdateAPIView, DestroyAPIView
+1. status/api/views.py
+    - Create UpdateAPIView
+    - Test at: http://localhost:8000/api/status/8/update/
+    - Create DestroyAPIView
+    - Test at: http://localhost:8000/api/status/8/delete/
+2. Note: with generic api views, List, Retrieve, Update and Destroy views are to be created separately.
+    - Better choice if we need only one of the CRUD operation
+    - Not recommended if all CRUD operations are desired
