@@ -1,7 +1,7 @@
 from rest_framework.renderers import JSONRenderer
 
 from status.models import Status
-from status.api.serializers import StatusSerializer
+from status.api.serializers import StatusSerializer, CustomSerializer
 
 '''Serialize a Single Object'''
 obj = Status.objects.first()
@@ -46,3 +46,10 @@ obj = Status.objects.last()  # grab the recent obj to delete
 get_data_serializer = StatusSerializer(obj)
 print(get_data_serializer.data)
 print(obj.delete())  # delete the object. No need of serializer to delete
+
+
+data = {'email': 'hello@kiran.com', 'content': 'please delete me'}
+create_obj_serializer = CustomSerializer(data=data)
+if create_obj_serializer.is_valid():
+    valid_data = create_obj_serializer.data
+    print(valid_data)

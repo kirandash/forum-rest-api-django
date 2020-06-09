@@ -227,7 +227,7 @@
         - `json.loads(json_data)` returns JSON data
 
 ### 3.5 Creating a Serializer - Create/Update/Delete object from shell
-1. Crate object from shell using serializer:
+1. Crate object from shell using serializer: `is_valid() and save()`
     - From venv: `python manage.py shell`
     - `from status.models import Status`
     - `from status.api.serializers import StatusSerializer`
@@ -237,17 +237,17 @@
     - `serializer.save()` Note: must run is_valid before save(). Saves the data after serializing
     - `Status.objects.count()`
     - `Status.objects.all()` check if new obj is created
-2. Update object from shell using serializer:
+2. Update object from shell using serializer: `is_valid() and save()`
     - `obj = Status.objects.first()`  # grab the obj to update
     - `data = {'content': 'some new content'}`  # data to update
     - `update_serializer = StatusSerializer(obj, data=data)`
     - `update_serializer.is_valid()`: returns False
-    - Check errors by `update_serializer.errors`
+    - **Check errors** by `update_serializer.errors`
     - `data = {'content': 'some new content', 'user': 1}`
     - `update_serializer = StatusSerializer(obj, data=data)`
     - `update_serializer.is_valid()`: returns True
     - `update_serializer.save()`
-3. Delete object from shell using model object:
+3. Delete object from shell using model object: `obj.delete()`
     - `data = {'user': 1, 'content': 'Please delete me'}`
     - `create_obj_serializer = StatusSerializer(data=data)`
     - `create_obj_serializer.is_valid()`
@@ -259,3 +259,9 @@
     - `print(get_data_serializer.data)`
     - `print(obj.delete())`  # delete the object. No need of serializer to delete
     - Note: To delete an object, we don't need serialize. Serializer is helpful when we try to create or update data, because we have to mention the fields. But while deleting just deleting the entire obj will do the job. We don't need field level details.
+
+### 3.6 Validations with ModelSerializer, CustomSerializer for plain fields
+1. can validate a serializer field with `validate_fieldname` fn - Field level validation
+2. Add validate_content to status/serializers.py file
+3. Note: the validation is equivalent to validations added earlier in forms.py file.
+4. Add validate method to StatusSerializer to validate all content types. - model level validation
