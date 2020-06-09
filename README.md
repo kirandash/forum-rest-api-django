@@ -284,8 +284,16 @@
     - /api/status/ - will return all status without any filter
 
 ### 3.9 Create API View with generics.CreateAPIView
-1. status/api/view.py
+1. status/api/view.py:
     - Create StatusCreateAPIView
 2. Add StatusCreateAPIView to status/api/urls.py file
 3. Test at: http://localhost:8000/api/status/create/
     - Get not allowed. Only post
+
+### 3.10 Detail API View with generics.RetrieveAPIView
+1. status/api/views.py
+    - Create RetrieveAPIView
+    - To map id from urlpattern with view, there are 3 ways:
+        - use 'pk' in url. It will map to view automatically
+        - use lookupfield if not using 'pk' in url
+        - overwrite get_object method and filter using kwargs
