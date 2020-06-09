@@ -191,6 +191,7 @@
 2. Serializers by DRF. Purpose:
     - serializers are used to convert Python data into JSON format which can then be served via API endpoints.
     - serializers can also be used to validate data
+    - serializers can be used to create / update data. No need of serializer for delete. The entire obj can be directly deleted with obj.delete method.
 3. Create status/api/serializers.py file
     - Create StatusSerializer class
 4. Tips on **accessing/working with JSON data** from shell:
@@ -224,3 +225,37 @@
         - `json_data` shows bytes data in JSON
         - `import json`
         - `json.loads(json_data)` returns JSON data
+
+### 3.5 Creating a Serializer - Create/Update/Delete object from shell
+1. Crate object from shell using serializer:
+    - From venv: `python manage.py shell`
+    - `from status.models import Status`
+    - `from status.api.serializers import StatusSerializer`
+    - `data={'user':1}`
+    - `serializer = StatusSerializer(data=data)`
+    - `serializer.is_valid()` returns T/F
+    - `serializer.save()` Note: must run is_valid before save(). Saves the data after serializing
+    - `Status.objects.count()`
+    - `Status.objects.all()` check if new obj is created
+2. Update object from shell using serializer:
+    - `obj = Status.objects.first()`  # grab the obj to update
+    - `data = {'content': 'some new content'}`  # data to update
+    - `update_serializer = StatusSerializer(obj, data=data)`
+    - `update_serializer.is_valid()`: returns False
+    - Check errors by `update_serializer.errors`
+    - `data = {'content': 'some new content', 'user': 1}`
+    - `update_serializer = StatusSerializer(obj, data=data)`
+    - `update_serializer.is_valid()`: returns True
+    - `update_serializer.save()`
+3. Delete object from shell using model object:
+    - `data = {'user': 1, 'content': 'Please delete me'}`
+    - `create_obj_serializer = StatusSerializer(data=data)`
+    - `create_obj_serializer.is_valid()`
+    - `create_obj = create_obj_serializer.save()`
+    - `print(create_obj)`
+    - `print(create_obj.id)`
+    - `obj = Status.objects.last()`  # grab the recent obj to delete
+    - `get_data_serializer = StatusSerializer(obj)`
+    - `print(get_data_serializer.data)`
+    - `print(obj.delete())`  # delete the object. No need of serializer to delete
+    - Note: To delete an object, we don't need serialize. Serializer is helpful when we try to create or update data, because we have to mention the fields. But while deleting just deleting the entire obj will do the job. We don't need field level details.
