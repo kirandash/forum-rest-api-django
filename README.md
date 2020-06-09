@@ -265,3 +265,7 @@
 2. Add validate_content to status/serializers.py file
 3. Note: the validation is equivalent to validations added earlier in forms.py file.
 4. Add validate method to StatusSerializer to validate all content types. - model level validation
+
+### 3.7 API Endpoint - Create urlpatterns
+1. Create status/api/urls.py and views.py files.
+2. Add urlpatterns for all views

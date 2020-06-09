@@ -3,13 +3,13 @@ from rest_framework import serializers
 from status.models import Status
 
 
-class CustomSerializer(serializers.Serializer):
-    # Plain Serializer
-    content = serializers.CharField()
-    email = serializers.EmailField()
-
-    # Note that we don't have save() method for plain serializers, it is only
-    # limited to ModelSerializer
+# class CustomSerializer(serializers.Serializer):
+#     # Plain Serializer
+#     content = serializers.CharField()
+#     email = serializers.EmailField()
+#
+#     # Note that we don't have save() method for plain serializers, it is only
+#     # limited to ModelSerializer
 
 
 class StatusSerializer(serializers.ModelSerializer):
