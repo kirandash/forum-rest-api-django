@@ -327,3 +327,8 @@
     - Docs: https://www.django-rest-framework.org/api-guide/generic-views/#destroymodelmixin
     - Test all methods at: http://localhost:8000/api/status/5/
 5. Remove StatusUpdateAPIView and StatusDeleteAPIView from api/urls.py file
+
+### 3.13 RetrieveUpdateDestroyAPIView
+1. Docs: https://www.django-rest-framework.org/api-guide/generic-views/#retrieveupdatedestroyapiview
+2. status/api/views.py
+    - Instead of adding mixins: we can just create another class using RetrieveUpdateDestroyAPIView

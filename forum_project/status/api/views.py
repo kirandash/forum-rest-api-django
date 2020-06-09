@@ -102,6 +102,10 @@ class StatusDetailAPIView(
         # call update method of UpdateModelMixin
         return self.update(request, *args, **kwargs)
 
+    def patch(self, request, *args, **kwargs):
+        # call update method of UpdateModelMixin
+        return self.update(request, *args, **kwargs)
+
     def delete(self, request, *args, **kwargs):
         # call destroy method of DestroyModelMixin
         return self.destroy(request, *args, **kwargs)
@@ -111,6 +115,16 @@ class StatusDetailAPIView(
     #     # call create method of CreateModelMixin
     #     return self.create(request, *args, **kwargs)
 
+
+# The class below does the same thing as above but in a cleaner way
+# class StatusDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+#     permission_classes = []
+#     authentication_classes = []
+#     # using default query set with API View
+#     queryset = Status.objects.all()
+#     serializer_class = StatusSerializer
+#     # optional if url has the default string pk mentioned
+#     lookup_field = 'id'  # to map with id in url or mention pk string in url
 
 # obsolete
 # class StatusUpdateAPIView(generics.UpdateAPIView):
