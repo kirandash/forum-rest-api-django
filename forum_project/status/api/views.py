@@ -2,7 +2,7 @@
 from django.views.generic import View
 # DRF View
 from rest_framework.views import APIView
-from rest_framework import generics
+from rest_framework import generics, mixins
 # from rest_framework.generics import ListAPIView
 # Response class to send JSON response
 from rest_framework.response import Response
@@ -24,7 +24,7 @@ class StatusListSearchAPIView(APIView):
         return Response(serializer.data)
 
     # Allow post method
-    def post(self):
+    def post(self, request):
         qs = Status.objects.all()  # query set must be serialized before
         # sending into response
         serializer = StatusSerializer(qs, many=True)
@@ -32,7 +32,11 @@ class StatusListSearchAPIView(APIView):
         return Response(serializer.data)
 
 
-class StatusAPIView(generics.ListAPIView):
+# Adding Mixin to handle : List + Create
+# CreateModelMixin --- post data
+# UpdateModelMixin --- put data
+# DestroyModelMixin --- DELETE data
+class StatusAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     permission_classes = []
     authentication_classes = []
     # using default query set with API View
@@ -48,13 +52,9 @@ class StatusAPIView(generics.ListAPIView):
             qs = qs.filter(content__icontains=query)
         return qs
 
-
-class StatusCreateAPIView(generics.CreateAPIView):
-    permission_classes = []
-    authentication_classes = []
-    # using default query set with API View
-    queryset = Status.objects.all()
-    serializer_class = StatusSerializer
+    def post(self, request, *args, **kwargs):
+        # call create method of CreateModelMixin
+        return self.create(request, *args, **kwargs)
 
     # overwriting the create method by not allowing user to choose which user
     # to update. And use default user
@@ -62,7 +62,28 @@ class StatusCreateAPIView(generics.CreateAPIView):
     #     serializer.save(user=self.request.user)
 
 
-class StatusDetailAPIView(generics.RetrieveAPIView):
+# obsolete
+# class StatusCreateAPIView(generics.CreateAPIView):
+#     permission_classes = []
+#     authentication_classes = []
+#     # using default query set with API View
+#     queryset = Status.objects.all()
+#     serializer_class = StatusSerializer
+#
+#     # overwriting the create method by not allowing user to choose which user
+#     # to update. And use default user
+#     # def perform_create(self, serializer):
+#     #     serializer.save(user=self.request.user)
+
+
+# Adding Mixin to handle : Detail + Update
+# UpdateModelMixin --- put data
+class StatusDetailAPIView(
+                            # mixins.CreateModelMixin,
+                            mixins.DestroyModelMixin,
+                            mixins.UpdateModelMixin,
+                            generics.RetrieveAPIView
+                         ):
     permission_classes = []
     authentication_classes = []
     # using default query set with API View
@@ -77,20 +98,35 @@ class StatusDetailAPIView(generics.RetrieveAPIView):
     #     kw_id = kwargs.get('id')
     #     return Status.objects.get(id=kw_id)
 
+    def put(self, request, *args, **kwargs):
+        # call update method of UpdateModelMixin
+        return self.update(request, *args, **kwargs)
 
-class StatusUpdateAPIView(generics.UpdateAPIView):
-    permission_classes = []
-    authentication_classes = []
-    # using default query set with API View
-    queryset = Status.objects.all()
-    serializer_class = StatusSerializer
-    # lookup_field not required since pk is used in urls.py file
+    def delete(self, request, *args, **kwargs):
+        # call destroy method of DestroyModelMixin
+        return self.destroy(request, *args, **kwargs)
+
+    # It's not recommended to add create view to detail endpoint bt possible
+    # def post(self, request, *args, **kwargs):
+    #     # call create method of CreateModelMixin
+    #     return self.create(request, *args, **kwargs)
 
 
-class StatusDeleteAPIView(generics.DestroyAPIView):
-    permission_classes = []
-    authentication_classes = []
-    # using default query set with API View
-    queryset = Status.objects.all()
-    serializer_class = StatusSerializer
-    lookup_field = 'id'  # to map with id in url or mention pk string in url
+# obsolete
+# class StatusUpdateAPIView(generics.UpdateAPIView):
+#     permission_classes = []
+#     authentication_classes = []
+#     # using default query set with API View
+#     queryset = Status.objects.all()
+#     serializer_class = StatusSerializer
+#     # lookup_field not required since pk is used in urls.py file
+
+
+# obsolete
+# class StatusDeleteAPIView(generics.DestroyAPIView):
+#     permission_classes = []
+#     authentication_classes = []
+#     # using default query set with API View
+#     queryset = Status.objects.all()
+#     serializer_class = StatusSerializer
+#     lookup_field = 'id'  # to map with id in url or mention pk string in url

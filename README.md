@@ -277,6 +277,7 @@
     - Create StatusListSearchAPIView from rest_framework: APIView
 2. Include status/api/urls.py in main project forum/urls.py file
 3. Test at: http://localhost:8000/api/status/
+    - Only GET allowed
 4. status/api/views.py
     - Create StatusAPIView with generics.ListAPIView, better way of handling get calls
     - Can overwrite the default qs using get_queryset method
@@ -308,3 +309,21 @@
 2. Note: with generic api views, List, Retrieve, Update and Destroy views are to be created separately.
     - Better choice if we need only one of the CRUD operation
     - Not recommended if all CRUD operations are desired
+
+### 3.12 Mixins to power http methods
+1. Docs:
+    - https://www.django-rest-framework.org/api-guide/generic-views/#mixins
+2. status/api/views.py
+    - Add CreateModelMixin to StatusAPIView
+    - Docs: https://www.django-rest-framework.org/api-guide/generic-views/#createmodelmixin
+    - Test http://localhost:8000/api/status/
+        - Should have both GET and POST allowed on it now. Earlier only GET was allowed.
+3. status/api/urls.py
+    - Remove StatusCreateAPIView
+4. status/api/view.py
+    - Add UpdateModelMixin to StatusDetailAPIView
+    - Docs: https://www.django-rest-framework.org/api-guide/generic-views/#updatemodelmixin
+    - Add DestroyModelMixin to StatusDetailAPIView
+    - Docs: https://www.django-rest-framework.org/api-guide/generic-views/#destroymodelmixin
+    - Test all methods at: http://localhost:8000/api/status/5/
+5. Remove StatusUpdateAPIView and StatusDeleteAPIView from api/urls.py file
