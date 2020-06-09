@@ -185,3 +185,42 @@
 5. Test list display at: http://localhost:8000/admin/status/status/
 6. Create a new status to check validation. Form should not submit with blank content & image. At lease one has to be provided.
 7. We have implemented simple validations. But the same approach can be used to create complex, custom validations for model fields that Django does not provide out of the box.
+
+### 3.4 Creating a Serializer
+1. To exchange data b/w Django and External env viz: React/Angular/any device: we will use JSON(JavaScript Object Notation) format.
+2. Serializers by DRF. Purpose:
+    - serializers are used to convert Python data into JSON format which can then be served via API endpoints.
+    - serializers can also be used to validate data
+3. Create status/api/serializers.py file
+    - Create StatusSerializer class
+4. Tips on **accessing/working with JSON data** from shell:
+    - From venv: `python manage.py shell`
+    - `import json` json library from python
+    - `data = {'abc':123}` create a python dict
+    - `data_list = ['abc']` create a data list
+    - `data_json = json.dumps(data)` converts python dict to a json string
+    - `data_json` return json string
+    - `load_json = json.loads(data_json)` loads json data as list
+    - `load_json['abc']`
+5. Tips on serializing data from Shell:
+    - **Serializing an Object**: 
+        - From venv: `from status.models import Status`
+        - `from status.api.serializers import StatusSerializer`
+        - `obj = Status.objects.first()`
+        - `obj`
+        - `data = StatusSerializer(obj)`
+        - `data`
+        - `data.data` serialized data (not json yet)
+        - test if json or not by `json.loads(data.data)`: throws error, since not json
+        - `from rest_framework.renderers import JSONRenderer`
+        - `new_json_data = JSONRenderer().render(data.data)`
+        - `new_json_data` shows bytes data in JSON
+        - `json.loads(new_json_data)` returns JSON data
+    - **Serializing a query set**
+        - `qs = Status.objects.all()`
+        - `serializer = StatusSerializer(qs,many=True)`
+        - `serializer.data`: returns an ordered dictionary
+        - `json_data = JSONRenderer().render(serializer.data)`
+        - `json_data` shows bytes data in JSON
+        - `import json`
+        - `json.loads(json_data)` returns JSON data
