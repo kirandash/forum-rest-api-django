@@ -269,3 +269,16 @@
 ### 3.7 API Endpoint - Create urlpatterns
 1. Create status/api/urls.py and views.py files.
 2. Add urlpatterns for all views
+3. Docs:
+    - https://docs.djangoproject.com/en/3.0/topics/http/urls/
+
+### 3.8 List and Search API View
+1. status/api/views.py
+    - Create StatusListSearchAPIView from rest_framework: APIView
+2. Include status/api/urls.py in main project forum/urls.py file
+3. Test at: http://localhost:8000/api/status/
+4. status/api/views.py
+    - Create StatusAPIView with generics.ListAPIView, better way of handling get calls
+    - Can overwrtie the default qs using get_queryset method
+    - Test at: /api/status/?q=delete - will return all status with content that has text delete
+    - /api/status/ - will return all status without any filter

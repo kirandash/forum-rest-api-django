@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 from updates.views import (
     json_dummy_view,
@@ -31,4 +31,5 @@ urlpatterns = [
     path('dummy/mixin/', JsonDummyCBVWithMixin.as_view()),
     path('dummy/serializer/detail/', SerializedDetailView.as_view()),
     path('dummy/serializer/list/', SerializedListView.as_view()),
+    path('api/status/', include('status.api.urls')),
 ]
