@@ -47,3 +47,17 @@ class StatusAPIView(generics.ListAPIView):
         if query is not None:
             qs = qs.filter(content__icontains=query)
         return qs
+
+
+class StatusCreateAPIView(generics.CreateAPIView):
+    permission_classes = []
+    authentication_classes = []
+    # using default query set with API View
+    queryset = Status.objects.all()
+    serializer_class = StatusSerializer
+
+    # overwriting the create method by not allowing user to choose which user
+    # to update. And use default user
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
+
