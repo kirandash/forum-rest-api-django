@@ -348,3 +348,9 @@
     - Create forum_project/scripts/rest_framework_api.py file
     - Run script with `python rest_framework_api.py` command
 2. Modify status/api/views.py to handle id request in get, put, patch, delete
+
+### 3.16 Uploading and Handling images
+1. For handling image: better option: use Django Storage ---> which uses AWS S3
+2. Add media details in settings.py - Add MEDIA_ROOT and MEDIA_URL
+3. Test image upload from rest_framework_api.py with do_img fn
+4. Note: Issue right now is: put isn't updating the same id but creating a new post.
