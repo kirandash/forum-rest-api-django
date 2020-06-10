@@ -333,7 +333,7 @@
 2. status/api/views.py
     - Instead of adding mixins: we can just create another class using RetrieveUpdateDestroyAPIView
 
-### 3.14 One API endpoint for CRUDL
+### 3.14 One API endpoint for CRUDL with DRF Mixins and ListAPIView
 1. Will create one endpoint for all CRUD steps.
 2. status/api/views.py
     - Test list view: http://localhost:8000/api/status/
@@ -341,3 +341,10 @@
     - Test query at: http://localhost:8000/api/status/?q=eat
 3. status/api/urls.py
     - comment all views but StatusAPIView
+
+### 3.15 One API endpoint for CRUDL with DRF Mixins and ListAPIView
+1. To test rest apis:
+    - from venv: `pip install requests`: package to create requests
+    - Create forum_project/scripts/rest_framework_api.py file
+    - Run script with `python rest_framework_api.py` command
+2. Modify status/api/views.py to handle id request in get, put, patch, delete

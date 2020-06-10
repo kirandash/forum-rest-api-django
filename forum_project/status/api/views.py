@@ -1,3 +1,4 @@
+import json
 # default django view
 from django.views.generic import View
 from django.shortcuts import get_object_or_404
@@ -10,6 +11,16 @@ from rest_framework.response import Response
 
 from status.models import Status
 from .serializers import StatusSerializer
+
+
+# utility fn to check if JSON data
+def is_json(json_data):
+    try:
+        real_json = json.loads(json_data)
+        is_valid = True
+    except ValueError:
+        is_valid = False
+    return is_valid
 
 
 # CRUDL with one API endpoint:
@@ -27,6 +38,7 @@ class StatusAPIView(mixins.CreateModelMixin,
     # using default query set with API View
     # queryset = Status.objects.all()
     serializer_class = StatusSerializer
+    passed_id = None
 
     # GET call for List view
     # overwriting qs by filtering with a param q
@@ -42,7 +54,8 @@ class StatusAPIView(mixins.CreateModelMixin,
     # Overwriting GET call for detail view
     def get_object(self):
         request = self.request
-        passed_id = request.GET.get('id', None)  # get id from request
+        # get id from request
+        passed_id = request.GET.get('id', None) or self.passed_id
         queryset = self.get_queryset()
         obj = None
         if passed_id is not None:
@@ -50,11 +63,26 @@ class StatusAPIView(mixins.CreateModelMixin,
             self.check_object_permissions(request, obj)  # check permission
         return obj  # return individual object
 
+    # overwrite DELETE method
+    def perform_destroy(self, instance):
+        if instance is not None:
+            instance.delete()
+        return None
+
     # overwriting default GET for List API view
     def get(self, request, *args, **kwargs):
-        passed_id = request.GET.get('id', None)  # get id from request
+        url_passed_id = request.GET.get('id', None)  # get id from request
+        json_data = {}
+        body_ = request.body
+        if is_json(body_):  # to avoid JSONDecodeError at api endpoint
+            json_data = json.loads(request.body)
+        new_passed_id = json_data.get('id', None)
+
         # request.body
         # request.data
+        print(request.body)
+        passed_id = url_passed_id or new_passed_id or None
+        self.passed_id = passed_id
         if passed_id is not None:
             # retrieve will call get_object method
             return self.retrieve(request, *args, **kwargs)
@@ -65,13 +93,49 @@ class StatusAPIView(mixins.CreateModelMixin,
         return self.create(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
+        url_passed_id = request.GET.get('id', None)  # get id from request
+        json_data = {}
+        body_ = request.body
+        if is_json(body_):  # to avoid JSONDecodeError at api endpoint
+            json_data = json.loads(request.body)
+        new_passed_id = json_data.get('id', None)
+
+        # request.body
+        # request.data
+        print(request.body)
+        passed_id = url_passed_id or new_passed_id or None
+        self.passed_id = passed_id
         return self.update(request, *args, **kwargs)
 
     def patch(self, request, *args, **kwargs):
+        url_passed_id = request.GET.get('id', None)  # get id from request
+        json_data = {}
+        body_ = request.body
+        if is_json(body_):  # to avoid JSONDecodeError at api endpoint
+            json_data = json.loads(request.body)
+        new_passed_id = json_data.get('id', None)
+
+        # request.body
+        # request.data
+        print(request.body)
+        passed_id = url_passed_id or new_passed_id or None
+        self.passed_id = passed_id
         return self.update(request, *args, **kwargs)
 
     # http method - delete, built in method in DRF: destroy
     def delete(self, request, *args, **kwargs):
+        url_passed_id = request.GET.get('id', None)  # get id from request
+        json_data = {}
+        body_ = request.body
+        if is_json(body_):  # to avoid JSONDecodeError at api endpoint
+            json_data = json.loads(request.body)
+        new_passed_id = json_data.get('id', None)
+
+        # request.body
+        # request.data
+        print(request.body)
+        passed_id = url_passed_id or new_passed_id or None
+        self.passed_id = passed_id
         return self.destroy(request, *args, **kwargs)
 
     # overwriting the create method by not allowing user to choose which user
