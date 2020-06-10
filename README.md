@@ -357,3 +357,11 @@
 5. Fix put issue:
     - unable to receive id and thus making a post instead of put. fetch proper id in put method
 
+### 3.17 Roll back Views for CRUDL - two endpoints
+1. Although we could handle all CRUDL operations with one endpoint. It became complicated. Thus, better not to use one endpoint for all methods. Refactor the code to separate the mixins to different endpoints.
+2. status/api/views.py
+    - Roll back to having two classes to have two endpoints
+3. Test at: 
+    - http://localhost:8000/api/status/
+    - http://localhost:8000/api/status/7/
+

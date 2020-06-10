@@ -4,7 +4,7 @@ from .views import (
     # StatusListSearchAPIView,
     StatusAPIView,
     # StatusCreateAPIView,
-    # StatusDetailAPIView,
+    StatusDetailAPIView,
     # StatusUpdateAPIView,
     # StatusDeleteAPIView,
 )
@@ -13,7 +13,7 @@ urlpatterns = [
     # path('', StatusListSearchAPIView.as_view()),
     path('', StatusAPIView.as_view()),
     # path('create/', StatusCreateAPIView.as_view()),
-    # path('<int:id>/', StatusDetailAPIView.as_view()),
+    path('<int:id>/', StatusDetailAPIView.as_view()),
     # path('<int:pk>/update/', StatusUpdateAPIView.as_view()),
     # path('<int:id>/delete/', StatusDeleteAPIView.as_view()),
 ]
@@ -25,9 +25,13 @@ urlpatterns = [
 # /api/status/12/update -> Update
 # /api/status/12/delete -> Delete
 
-# Approach Two
+# Approach Two with mixins
 # /api/status -> List -> CRUD
 # /api/status/1/ -> Detail -> CRUD
 
-# Approach Three
+# Approach Three with mixins
 # /api/status -> CRUD & LS
+
+# Best Approach with mixins
+# /api/status -> List -> CRUD
+# /api/status/1/ -> Detail -> CRUD
