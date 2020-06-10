@@ -103,7 +103,8 @@ class StatusAPIView(mixins.CreateModelMixin,
         # request.body
         # request.data
         print(request.body)
-        passed_id = url_passed_id or new_passed_id or None
+        requested_id = request.data.get('id', None)
+        passed_id = url_passed_id or new_passed_id or requested_id or None
         self.passed_id = passed_id
         return self.update(request, *args, **kwargs)
 

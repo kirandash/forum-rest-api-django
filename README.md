@@ -354,3 +354,6 @@
 2. Add media details in settings.py - Add MEDIA_ROOT and MEDIA_URL
 3. Test image upload from rest_framework_api.py with do_img fn
 4. Note: Issue right now is: put isn't updating the same id but creating a new post.
+5. Fix put issue:
+    - unable to receive id and thus making a post instead of put. fetch proper id in put method
+
