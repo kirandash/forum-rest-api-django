@@ -332,3 +332,12 @@
 1. Docs: https://www.django-rest-framework.org/api-guide/generic-views/#retrieveupdatedestroyapiview
 2. status/api/views.py
     - Instead of adding mixins: we can just create another class using RetrieveUpdateDestroyAPIView
+
+### 3.14 One API endpoint for CRUDL
+1. Will create one endpoint for all CRUD steps.
+2. status/api/views.py
+    - Test list view: http://localhost:8000/api/status/
+    - Test detail view: http://localhost:8000/api/status/?id=6
+    - Test query at: http://localhost:8000/api/status/?q=eat
+3. status/api/urls.py
+    - comment all views but StatusAPIView

@@ -1,5 +1,6 @@
 # default django view
 from django.views.generic import View
+from django.shortcuts import get_object_or_404
 # DRF View
 from rest_framework.views import APIView
 from rest_framework import generics, mixins
@@ -11,55 +12,123 @@ from status.models import Status
 from .serializers import StatusSerializer
 
 
-class StatusListSearchAPIView(APIView):
-    permission_classes = []
-    authentication_classes = []
-
-    # Allow get method - without this: get won't be allowed
-    def get(self, request):
-        qs = Status.objects.all()  # query set must be serialized before
-        # sending into response
-        serializer = StatusSerializer(qs, many=True)
-        # return Response(qs)
-        return Response(serializer.data)
-
-    # Allow post method
-    def post(self, request):
-        qs = Status.objects.all()  # query set must be serialized before
-        # sending into response
-        serializer = StatusSerializer(qs, many=True)
-        # return Response(qs)
-        return Response(serializer.data)
-
-
+# CRUDL with one API endpoint:
 # Adding Mixin to handle : List + Create
 # CreateModelMixin --- post data
 # UpdateModelMixin --- put data
 # DestroyModelMixin --- DELETE data
-class StatusAPIView(mixins.CreateModelMixin, generics.ListAPIView):
+class StatusAPIView(mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.ListAPIView):
     permission_classes = []
     authentication_classes = []
     # using default query set with API View
     # queryset = Status.objects.all()
     serializer_class = StatusSerializer
 
+    # GET call for List view
     # overwriting qs by filtering with a param q
     # search overwrite: Test: /api/status/?q=delete
     def get_queryset(self):
+        request = self.request
         qs = Status.objects.all()
-        query = self.request.GET.get('q')
+        query = request.GET.get('q')
         if query is not None:
             qs = qs.filter(content__icontains=query)
         return qs
+
+    # Overwriting GET call for detail view
+    def get_object(self):
+        request = self.request
+        passed_id = request.GET.get('id', None)  # get id from request
+        queryset = self.get_queryset()
+        obj = None
+        if passed_id is not None:
+            obj = get_object_or_404(queryset, id=passed_id)  # get object
+            self.check_object_permissions(request, obj)  # check permission
+        return obj  # return individual object
+
+    # overwriting default GET for List API view
+    def get(self, request, *args, **kwargs):
+        passed_id = request.GET.get('id', None)  # get id from request
+        # request.body
+        # request.data
+        if passed_id is not None:
+            # retrieve will call get_object method
+            return self.retrieve(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         # call create method of CreateModelMixin
         return self.create(request, *args, **kwargs)
 
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    # http method - delete, built in method in DRF: destroy
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
     # overwriting the create method by not allowing user to choose which user
     # to update. And use default user
     # def perform_create(self, serializer):
     #     serializer.save(user=self.request.user)
+
+
+# class StatusListSearchAPIView(APIView):
+#     permission_classes = []
+#     authentication_classes = []
+#
+#     # Allow get method - without this: get won't be allowed
+#     def get(self, request):
+#         qs = Status.objects.all()  # query set must be serialized before
+#         # sending into response
+#         serializer = StatusSerializer(qs, many=True)
+#         # return Response(qs)
+#         return Response(serializer.data)
+#
+#     # Allow post method
+#     def post(self, request):
+#         qs = Status.objects.all()  # query set must be serialized before
+#         # sending into response
+#         serializer = StatusSerializer(qs, many=True)
+#         # return Response(qs)
+#         return Response(serializer.data)
+
+
+# Adding Mixin to handle : List + Create
+# CreateModelMixin --- post data
+# UpdateModelMixin --- put data
+# DestroyModelMixin --- DELETE data
+# class StatusAPIView(mixins.CreateModelMixin, generics.ListAPIView):
+#     permission_classes = []
+#     authentication_classes = []
+#     # using default query set with API View
+#     # queryset = Status.objects.all()
+#     serializer_class = StatusSerializer
+#
+#     # overwriting qs by filtering with a param q
+#     # search overwrite: Test: /api/status/?q=delete
+#     def get_queryset(self):
+#         qs = Status.objects.all()
+#         query = self.request.GET.get('q')
+#         if query is not None:
+#             qs = qs.filter(content__icontains=query)
+#         return qs
+#
+#     def post(self, request, *args, **kwargs):
+#         # call create method of CreateModelMixin
+#         return self.create(request, *args, **kwargs)
+#
+#     # overwriting the create method by not allowing user to choose which user
+#     # to update. And use default user
+#     # def perform_create(self, serializer):
+#     #     serializer.save(user=self.request.user)
 
 
 # obsolete
@@ -78,42 +147,42 @@ class StatusAPIView(mixins.CreateModelMixin, generics.ListAPIView):
 
 # Adding Mixin to handle : Detail + Update
 # UpdateModelMixin --- put data
-class StatusDetailAPIView(
-                            # mixins.CreateModelMixin,
-                            mixins.DestroyModelMixin,
-                            mixins.UpdateModelMixin,
-                            generics.RetrieveAPIView
-                         ):
-    permission_classes = []
-    authentication_classes = []
-    # using default query set with API View
-    queryset = Status.objects.all()
-    serializer_class = StatusSerializer
-    # optional if url has the default string pk mentioned
-    lookup_field = 'id'  # to map with id in url or mention pk string in url
-
-    # alternate to lookup_field with kwargs (args from url)
-    # def get_object(self):
-    #     kwargs = self.kwargs
-    #     kw_id = kwargs.get('id')
-    #     return Status.objects.get(id=kw_id)
-
-    def put(self, request, *args, **kwargs):
-        # call update method of UpdateModelMixin
-        return self.update(request, *args, **kwargs)
-
-    def patch(self, request, *args, **kwargs):
-        # call update method of UpdateModelMixin
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        # call destroy method of DestroyModelMixin
-        return self.destroy(request, *args, **kwargs)
-
-    # It's not recommended to add create view to detail endpoint bt possible
-    # def post(self, request, *args, **kwargs):
-    #     # call create method of CreateModelMixin
-    #     return self.create(request, *args, **kwargs)
+# class StatusDetailAPIView(
+#                             # mixins.CreateModelMixin,
+#                             mixins.DestroyModelMixin,
+#                             mixins.UpdateModelMixin,
+#                             generics.RetrieveAPIView
+#                          ):
+#     permission_classes = []
+#     authentication_classes = []
+#     # using default query set with API View
+#     queryset = Status.objects.all()
+#     serializer_class = StatusSerializer
+#     # optional if url has the default string pk mentioned
+#     lookup_field = 'id'  # to map with id in url or mention pk string in url
+#
+#     # alternate to lookup_field with kwargs (args from url)
+#     # def get_object(self):
+#     #     kwargs = self.kwargs
+#     #     kw_id = kwargs.get('id')
+#     #     return Status.objects.get(id=kw_id)
+#
+#     def put(self, request, *args, **kwargs):
+#         # call update method of UpdateModelMixin
+#         return self.update(request, *args, **kwargs)
+#
+#     def patch(self, request, *args, **kwargs):
+#         # call update method of UpdateModelMixin
+#         return self.update(request, *args, **kwargs)
+#
+#     def delete(self, request, *args, **kwargs):
+#         # call destroy method of DestroyModelMixin
+#         return self.destroy(request, *args, **kwargs)
+#
+#     # It's not recommended to add create view to detail endpoint bt possible
+#     # def post(self, request, *args, **kwargs):
+#     #     # call create method of CreateModelMixin
+#     #     return self.create(request, *args, **kwargs)
 
 
 # The class below does the same thing as above but in a cleaner way
