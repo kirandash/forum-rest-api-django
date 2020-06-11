@@ -2,9 +2,11 @@ import json
 # default django view
 from django.views.generic import View
 from django.shortcuts import get_object_or_404
+# authentication
+from rest_framework.authentication import SessionAuthentication
 # DRF View
 from rest_framework.views import APIView
-from rest_framework import generics, mixins
+from rest_framework import generics, mixins, permissions
 # from rest_framework.generics import ListAPIView
 # Response class to send JSON response
 from rest_framework.response import Response
@@ -54,10 +56,12 @@ class StatusDetailAPIView(mixins.UpdateModelMixin,
     #     return None
 
 
+# Login required mixin / decorator
 class StatusAPIView(mixins.CreateModelMixin,
                     generics.ListAPIView):
-    permission_classes = []
-    authentication_classes = []
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # validation
+    # how to login
+    authentication_classes = [SessionAuthentication]  # Oauth, JWT
     # using default query set with API View
     # queryset = Status.objects.all()
     serializer_class = StatusSerializer
@@ -67,6 +71,7 @@ class StatusAPIView(mixins.CreateModelMixin,
     # search overwrite: Test: /api/status/?q=delete
     def get_queryset(self):
         request = self.request
+        print(request.user)  # Anonymous user
         qs = Status.objects.all()
         query = request.GET.get('q')
         if query is not None:

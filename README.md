@@ -365,3 +365,15 @@
     - http://localhost:8000/api/status/
     - http://localhost:8000/api/status/7/
 
+### 3.18 Authentication & Permissions
+1. Right now, we need to send user info in request body to make CRUD operation. user info should be taken based on session. Also right now our endpoints are public. We should enable authentication now.
+2. status/api/views.py
+    - Add authentication class SessionAuthentication to StatusAPIView
+    - Add permission class IsAuthenticated to StatusAPIView (IsAuthenticated will ask auth for all CRUD operation)
+    - IsAuthenticatedorReadonly will check for auth, if not available, will return readonly fields. Ex: GET call will work.
+3. status/api/serializers.py
+    - Make user field read only. So that it can't be edited from POST etc.
+    - Docs: read_only_fields https://www.django-rest-framework.org/api-guide/serializers/#specifying-read-only-fields
+4. Test http://localhost:8000/api/status/
+    - if not authenticated only GET will be accessible
+    - if authenticated, will be able to see POST method
