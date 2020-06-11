@@ -6,6 +6,24 @@ ENDPOINT = "http://localhost:8000/api/status/"
 
 image_path = os.path.join(os.getcwd(), "testimage.png")
 
+get_endpoint = ENDPOINT + str(12)
+post_data = json.dumps({"content": "Some random content"})
+
+# GET calls should run fine without auth
+r = requests.get(get_endpoint)
+print(r.text)
+
+r2 = requests.get(ENDPOINT)
+print(r2.status_code)
+
+# POST Calls will ask for auth
+post_headers = {
+    'content-type': 'application/json'
+}
+post_response = requests.post(ENDPOINT, data=post_data, headers=post_headers)
+
+print(post_response.text)
+
 
 def do_img(method='get', data={}, is_json=True, img_path=None):
     headers = {}

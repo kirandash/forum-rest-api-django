@@ -387,3 +387,11 @@
     - permission settings: https://www.django-rest-framework.org/api-guide/permissions/
 4. Now we can comment our settings in StatusAPIView and StatusDetailAPIView. So, it will use settings from settings.py file ---> restconf ---> main.py file
 5. Global settings of settings.py file can be overwritten in individual views.
+
+### 3.20 Permission Tests with Python requests
+1. scripts/rest_framework_api.py
+    - Add script
+    - Run script using python
+2. Note: 
+    - JWT auth is best if all endpoints are for internal authentication. viz(React, Angular auth etc) Ex: Netflix uses JWT and not auth. As their APIs are not exposed to 3rd party.
+    - Oauth or Oauth2 is recommended if we have to authenticate 3rd party services viz twitter etc to access our DB
