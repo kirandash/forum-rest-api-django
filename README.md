@@ -377,3 +377,13 @@
 4. Test http://localhost:8000/api/status/
     - if not authenticated only GET will be accessible
     - if authenticated, will be able to see POST method
+5. Bug fix: views.py: perform_create should be added to be able to create new posts.
+
+### 3.19 Global settings for Authentication and Permission in settings.py file
+1. Since all of the API classes are going to have common settings. we will define all the rest configuration in forum/restconf/main.py file.
+2. Import main.py in settings.py file
+3. Docs: 
+    - authentication settings: https://www.django-rest-framework.org/api-guide/authentication/#setting-the-authentication-scheme
+    - permission settings: https://www.django-rest-framework.org/api-guide/permissions/
+4. Now we can comment our settings in StatusAPIView and StatusDetailAPIView. So, it will use settings from settings.py file ---> restconf ---> main.py file
+5. Global settings of settings.py file can be overwritten in individual views.

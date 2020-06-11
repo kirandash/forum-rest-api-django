@@ -28,8 +28,8 @@ def is_json(json_data):
 class StatusDetailAPIView(mixins.UpdateModelMixin,
                           mixins.DestroyModelMixin,
                           generics.RetrieveAPIView):
-    permission_classes = []
-    authentication_classes = []
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # authentication_classes = [] # use global setting if commented
     # using default query set with API View
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
@@ -59,9 +59,10 @@ class StatusDetailAPIView(mixins.UpdateModelMixin,
 # Login required mixin / decorator
 class StatusAPIView(mixins.CreateModelMixin,
                     generics.ListAPIView):
+    # overwrite default permission of IsAuthenticated
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]  # validation
     # how to login
-    authentication_classes = [SessionAuthentication]  # Oauth, JWT
+    # authentication_classes = [SessionAuthentication]  # Oauth, JWT
     # using default query set with API View
     # queryset = Status.objects.all()
     serializer_class = StatusSerializer
