@@ -82,8 +82,8 @@ class StatusAPIView(mixins.CreateModelMixin,
         # call create method of CreateModelMixin
         return self.create(request, *args, **kwargs)
 
-    # def perform_create(self, serializer):
-    #     serializer.save(user=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 # CRUDL with one API endpoint:
