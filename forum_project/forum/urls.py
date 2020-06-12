@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
+# from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from updates.views import (
     json_dummy_view,
@@ -33,6 +33,7 @@ urlpatterns = [
     path('dummy/serializer/detail/', SerializedDetailView.as_view()),
     path('dummy/serializer/list/', SerializedListView.as_view()),
     path('api/status/', include('status.api.urls')),
-    path('api/auth/jwt/', obtain_jwt_token),
-    path('api/auth/jwt/refresh/', refresh_jwt_token),
+    # path('api/auth/jwt/', obtain_jwt_token),
+    # path('api/auth/jwt/refresh/', refresh_jwt_token),
+    path('api/auth/', include('accounts.api.urls')),
 ]

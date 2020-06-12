@@ -432,3 +432,13 @@
 5. Add utils.py file to main.py - JWT_RESPONSE_PAYLOAD_HANDLER
 6. Now posting username and password to http://localhost:8000/api/auth/jwt/ will return token and username.
 7. Add expiration detail from JWT_REFRESH_EXPIRATION_DELTA and add to payload so that we can show a warning to user that session is about to expire and refresh the token.
+
+### 3.24 Custom authentication view
+1. Currently, we are able to get the token from api/auth/jwt endpoint. We will customize it to get the token in multiple ways.
+2. Docs: - https://jpadilla.github.io/django-rest-framework-jwt/ - Read section "Creating a new token manually"
+3. Create accounts/api/
+    - urls.py file, 
+    - views.py file 
+4. Move jwt related urls to api/urls.py file
+5. Create AuthView in api/views.py file
+6. Test from scripts/rest_framework_api.py file
