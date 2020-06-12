@@ -2,9 +2,39 @@ import os
 import json
 import requests
 
+AUTH_ENDPOINT = "http://localhost:8000/api/auth/jwt/"
+REFRESH_ENDPOINT = AUTH_ENDPOINT + "refresh/"
 ENDPOINT = "http://localhost:8000/api/status/"
 
 image_path = os.path.join(os.getcwd(), "testimage.png")
+
+data = {
+    'username': 'kiran',
+    'password': 'django1234'
+}
+
+r = requests.post(AUTH_ENDPOINT, data=data)
+
+print(r.json())  # should print response with token in console
+
+token = r.json()['token']
+
+print(token)  # print token in console
+
+# Test request for REFRESH ENDPOINT
+headers = {
+    "Content-Type": "application/json"
+}
+
+refresh_data = {
+    'token': token
+}
+
+new_response = requests.post(REFRESH_ENDPOINT, data=json.dumps(refresh_data),
+                             headers=headers)
+new_token = new_response.json()['token']
+
+print(new_token)  # should print refreshed/renewed token in console
 
 get_endpoint = ENDPOINT + str(12)
 post_data = json.dumps({"content": "Some random content"})

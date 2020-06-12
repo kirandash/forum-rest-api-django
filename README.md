@@ -395,3 +395,18 @@
 2. Note: 
     - JWT auth is best if all endpoints are for internal authentication. viz(React, Angular auth etc) Ex: Netflix uses JWT and not auth. As their APIs are not exposed to 3rd party.
     - Oauth or Oauth2 is recommended if we have to authenticate 3rd party services viz twitter etc to access our DB
+
+### 3.21 Implement JWT Authentication
+1. Docs: REST framework JWT Auth: https://jpadilla.github.io/django-rest-framework-jwt/
+2. JWT (JSON Web Token)
+3. Follow installation instructions from doc
+    - `pip install djangorestframework-jwt`
+    - Add `JSONWebTokenAuthentication` to REST_FRAMEWORK settings in main.py
+    - Add path to forum/urls.py
+    - Test at: http://localhost:8000/api/auth/jwt/. Pass username and pwd and it will return a token.
+4. Test with python request:
+    - forum_projects/scripts/rest_framework_api.py
+5. Implement **refresh token** feature. If JWT_ALLOW_REFRESH is True, non-expired tokens can be "refreshed" to obtain a brand new token with renewed expiration time.
+6. Add test to forum_projects/scripts/rest_framework_api.py
+7. Add settings for JWT_AUTH in main.py and set JWT_ALLOW_REFRESH as True
+8. Run test with python rest_framework_api.py
