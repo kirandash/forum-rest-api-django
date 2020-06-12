@@ -410,3 +410,8 @@
 6. Add test to forum_projects/scripts/rest_framework_api.py
 7. Add settings for JWT_AUTH in main.py and set JWT_ALLOW_REFRESH as True
 8. Run test with python rest_framework_api.py
+
+### 3.22 JWT Authorization header
+1. Send `"Authorization": "JWT " + token,` in headers to API calls.
+2. Note: The prefix JWT can be changed in main.py file: JWT_AUTH_HEADER_PREFIX
+3. Note: JWT from DRF auto adds content type as json. No need to force, especially with file types being sent.
