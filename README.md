@@ -442,3 +442,13 @@
 4. Move jwt related urls to api/urls.py file
 5. Create AuthView in api/views.py file
 6. Test from scripts/rest_framework_api.py file
+
+### 3.25 Test auth view for email and already authenticated
+1. scripts/rest_framework_api.py - add test script
+2. add email to user and test
+
+### 3.26 Register API view
+1. Create a new view to register users as well
+2. Add RegisterAPIView to accounts/api/views.py file
+3. Add views to urls.py file
+4. Test rest_framework_api.py 

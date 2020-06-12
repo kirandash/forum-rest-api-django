@@ -4,26 +4,45 @@ import requests
 
 # AUTH_ENDPOINT = "http://localhost:8000/api/auth/jwt/"
 AUTH_ENDPOINT = "http://localhost:8000/api/auth/"
+REGISTER_ENDPOINT = "http://localhost:8000/api/auth/register/"
 REFRESH_ENDPOINT = AUTH_ENDPOINT + "refresh/"
 ENDPOINT = "http://localhost:8000/api/status/"
 
 image_path = os.path.join(os.getcwd(), "testimage.png")
 
+headers = {
+    "Content-Type": "application/json",
+    # to check if you are already authenticated
+    # "Authorization": "JWT " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImtpcmFuIiwiZXhwIjoxNTkxOTc1MDA3LCJlbWFpbCI6IiIsIm9yaWdfaWF0IjoxNTkxOTc0NzA3fQ.Di_cpg9gwEkbbki4Q1WLUextXK3qwB0iixHaRl3VLZY",
+}  # add the token to check if user is already authorized
+
 data = {
-    'username': 'kiran',
+    'username': 'kiran.dash@truuue.com',
     'password': 'django1234'
 }
 
-r = requests.post(AUTH_ENDPOINT, data=data)
+regdata = {
+    'username': 'kiran.dash2@truuue.com',
+    'password': 'django1234',
+    'password2': 'django1234'
+}  # check for password match
+
+# r = requests.post(AUTH_ENDPOINT, data=data)
+
+# registers user and sends back token, username, expires
+reg = requests.post(REGISTER_ENDPOINT, data=json.dumps(regdata),
+                    headers=headers)
+
+print(reg.json())
 
 # alternate way to post with with headers
-# r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
+r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
 
 print(r.json())  # should print response with token in console
 
 token = r.json()  # ['token']
 
-print(token)  # print token in console
+# print(token)  # print token in console
 
 # Store the token in cookie and set expiration date (Frontend)
 
