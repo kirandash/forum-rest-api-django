@@ -415,3 +415,20 @@
 1. Send `"Authorization": "JWT " + token,` in headers to API calls.
 2. Note: The prefix JWT can be changed in main.py file: JWT_AUTH_HEADER_PREFIX
 3. Note: JWT from DRF auto adds content type as json. No need to force, especially with file types being sent.
+
+### 3.23 Custom JWT response payload handler - add username, expires info
+1. We will modify payload of response.
+    - JWT_RESPONSE_PAYLOAD_HANDLER
+    - Responsible for controlling the response data returned after login or refresh. Override to return a custom response such as including the serialized representation of the User.
+    - Defaults to return the JWT token.
+2. Create new app: `python manage.py startapp accounts`
+    - Add to settings.py file
+    - `python manage.py makemigrations`
+    - `python manage.py migrate`
+3. Create accounts/api/
+    - __init__.py file
+    - utils.py file
+4. overwrite jwt_response_payload_handler in utils.py file
+5. Add utils.py file to main.py - JWT_RESPONSE_PAYLOAD_HANDLER
+6. Now posting username and password to http://localhost:8000/api/auth/jwt/ will return token and username.
+7. Add expiration detail from JWT_REFRESH_EXPIRATION_DELTA and add to payload so that we can show a warning to user that session is about to expire and refresh the token.
