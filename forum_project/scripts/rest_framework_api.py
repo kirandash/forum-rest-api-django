@@ -22,7 +22,7 @@ data = {
 }
 
 regdata = {
-    'username': 'kiran.dash10@truuue.com',
+    'username': 'kiran.dash12@truuue.com',
     'password': 'django1234',
     'password2': 'django1234'
 }  # check for password match
@@ -38,9 +38,9 @@ print(reg.json())
 # alternate way to post with with headers
 r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
 
-print(r.json())  # should print response with token in console
+# print(r.json())  # should print response with token in console
 
-token = r.json()  # ['token']
+# token = r.json()  # ['token']
 
 # print(token)  # print token in console
 

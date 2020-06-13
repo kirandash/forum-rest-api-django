@@ -464,3 +464,6 @@
 1. accounts/api/serializers.py
     - Create serializer method field for token, expires
     - Create alternate serializer method to use token_response
+
+### 3.29 Get Context data
+1. Pass request data to serializer from view using get_serializer_context method
