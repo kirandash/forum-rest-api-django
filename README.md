@@ -503,3 +503,10 @@ Note: Concepts above are enought to create a fully functional APIs. All new conc
 6. Test if uri is added at: 
     - http://localhost:8000/api/status/12/
     - http://localhost:8000/api/status/
+
+### 3.34 Nested Serializer - for query sets of status lists in user endpoint
+1. Create api/user/views.py - UserDetailAPIView
+2. Create api/user/serializers.py - UserDetailSerializer
+3. Create api/user/urls.py file. Include in forum/urls.py file
+4. Test endpoint at: http://localhost:8000/api/user/kiran/
+    - should include user info + status 

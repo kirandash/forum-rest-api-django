@@ -12,10 +12,29 @@ from status.models import Status
 #     # Note that we don't have save() method for plain serializers, it is only
 #     # limited to ModelSerializer
 
+class StatusInlineUserSerializer(serializers.ModelSerializer):
+    uri = serializers.SerializerMethodField(read_only=True)
+    user = UserPublicSerializer(read_only=True)
+    # serializing model data
+
+    class Meta:
+        model = Status
+        fields = [
+            'uri',
+            'id',
+            'user',
+            'content',
+            'image'
+        ]
+
+    def get_uri(self, obj):
+        return "/api/status/{id}".format(id=obj.id)
+
 
 class StatusSerializer(serializers.ModelSerializer):
     uri = serializers.SerializerMethodField(read_only=True)
     user = UserPublicSerializer(read_only=True)
+
     # serializing model data
     class Meta:
         model = Status
