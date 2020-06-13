@@ -459,3 +459,8 @@
     - Create UserRegisterSerializer
 3. Use UserRegisterSerializer in accounts/api/views.py file
 4. Run test script for registration
+
+### 3.28 Serializer method field
+1. accounts/api/serializers.py
+    - Create serializer method field for token, expires
+    - Create alternate serializer method to use token_response
