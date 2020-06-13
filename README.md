@@ -489,3 +489,17 @@
 1. Add is owner permission check to StatusDetailAPIView. as we want only the owner to be able to perform put/patch/delete operation on their status.
 2. modify status/models.py - to create owner property and status/api/views.py - to import permission
 3. Test: python rest_framework_api.py. Check that user can't modify other user's posts.
+
+Note: Concepts above are enought to create a fully functional APIs. All new concepts are for improving the API.
+
+### 3.33 Nested Serializer - for user and add uri info
+1. Right now the status detail api endpoint returns only user id. We will customize it to add more info like: username etc.
+2. accounts/api/serializers.py
+    - Create UserPublicSerializer to show users publicly with username
+3. status/api/serializers.py
+    - Add UserPublicSerializer to StatusSerializer's user field.
+4. Run test and now: detail view should return username and user id in a nested JSON structure.
+5. Also add uri information for user and status serializers. Better coding practice so in future other developers can locate the endpoint for serialized fields easily.
+6. Test if uri is added at: 
+    - http://localhost:8000/api/status/12/
+    - http://localhost:8000/api/status/

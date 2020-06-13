@@ -14,6 +14,21 @@ expires_delta = api_settings.JWT_REFRESH_EXPIRATION_DELTA
 User = get_user_model()
 
 
+class UserPublicSerializer(serializers.ModelSerializer):
+    uri = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            'id',
+            'username',
+            'uri'
+        ]
+
+    def get_uri(self, obj):
+        return "/api/users/{id}".format(id=obj.id)
+
+
 class UserRegisterSerializer(serializers.ModelSerializer):
     # make password write only by overwriting
     # also add style for console
