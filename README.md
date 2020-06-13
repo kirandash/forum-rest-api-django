@@ -510,3 +510,12 @@ Note: Concepts above are enought to create a fully functional APIs. All new conc
 3. Create api/user/urls.py file. Include in forum/urls.py file
 4. Test endpoint at: http://localhost:8000/api/user/kiran/
     - should include user info + status 
+
+### 3.35 Nested Serializer - user detail - status endpoint
+1. Create UserStatusAPIView. Add view to urls.py
+2. Test at: http://localhost:8000/api/user/kiran/status/ 
+3. Include status_uri to UserDetailSerializer
+4. Restructure detail user serializer for status. Add last status, recent status list to endpoint data
+5. Test at: http://localhost:8000/api/user/kiran/
+6. Also add limit to UserDetailSerializer
+7. Test at: http://localhost:8000/api/user/kiran/?limit=3 - should return 3 recent posts
