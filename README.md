@@ -484,3 +484,8 @@
 4. views.py
     - Add AnonPermissionOnly to RegisterAPIView, AuthAPIView. Since the API should be for anonymous users only. Not for all.
 5. Test accessing register endpoint with existing token.
+
+### 3.32 Is owner or read only permission
+1. Add is owner permission check to StatusDetailAPIView. as we want only the owner to be able to perform put/patch/delete operation on their status.
+2. modify status/models.py - to create owner property and status/api/views.py - to import permission
+3. Test: python rest_framework_api.py. Check that user can't modify other user's posts.

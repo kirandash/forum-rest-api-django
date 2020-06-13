@@ -2,41 +2,80 @@ import os
 import json
 import requests
 
-# AUTH_ENDPOINT = "http://localhost:8000/api/auth/jwt/"
-AUTH_ENDPOINT = "http://localhost:8000/api/auth/"
-REGISTER_ENDPOINT = "http://localhost:8000/api/auth/register/"
-REFRESH_ENDPOINT = AUTH_ENDPOINT + "refresh/"
-ENDPOINT = "http://localhost:8000/api/status/"
 
-image_path = os.path.join(os.getcwd(), "testimage.png")
+AUTH_ENDPOINT = "http://localhost:8000/api/auth/"
 
 headers = {
-    "Content-Type": "application/json",
-    # to check if you are already authenticated
-    "Authorization": "JWT " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNiwidXNlcm5hbWUiOiJraXJhbi5kYXNoMTZAdHJ1dXVlLmNvbSIsImV4cCI6MTU5MjA0MjIwMCwiZW1haWwiOiJkamFuZ28xMjM0Iiwib3JpZ19pYXQiOjE1OTIwNDE5MDB9.oA8ARubVhBB__c7hoWOjA4jY6Nc2ZjEuww7J-OWIZUE",
-}  # add the token to check if user is already authorized
+    "Content-Type": "application/json"
+}
 
 data = {
     'username': 'kiran.dash@truuue.com',
     'password': 'django1234'
 }
 
-regdata = {
-    'username': 'kiran.dash17@truuue.com',
-    'password': 'django1234',
-    'password2': 'django1234'
-}  # check for password match
+r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
+token = r.json()['token']
+print(token)
+
+BASE_ENDPOINT = "http://localhost:8000/api/status/"
+ENDPOINT = "http://localhost:8000/api/status/44/"
+image_path = os.path.join(os.getcwd(), "testimage.png")
+
+headers2 = {
+    "Authorization": "JWT " + token
+}
+
+data2 = {
+    'content': 'New content post'
+}
+
+with open(image_path, 'rb') as image:
+    file_data = {
+        'image': image
+    }
+    r = requests.put(ENDPOINT, data=data2, headers=headers2,
+                     files=file_data)
+    print(r.text)
+    # r2 = requests.post(BASE_ENDPOINT, data=data2, headers=headers2,
+    #                    files=file_data)
+    # print(r2.text)
+
+# AUTH_ENDPOINT = "http://localhost:8000/api/auth/jwt/"
+# AUTH_ENDPOINT = "http://localhost:8000/api/auth/"
+# REGISTER_ENDPOINT = "http://localhost:8000/api/auth/register/"
+# REFRESH_ENDPOINT = AUTH_ENDPOINT + "refresh/"
+# ENDPOINT = "http://localhost:8000/api/status/"
+#
+# image_path = os.path.join(os.getcwd(), "testimage.png")
+#
+# headers = {
+#     "Content-Type": "application/json",
+#     # to check if you are already authenticated
+#     "Authorization": "JWT " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNiwidXNlcm5hbWUiOiJraXJhbi5kYXNoMTZAdHJ1dXVlLmNvbSIsImV4cCI6MTU5MjA0MjIwMCwiZW1haWwiOiJkamFuZ28xMjM0Iiwib3JpZ19pYXQiOjE1OTIwNDE5MDB9.oA8ARubVhBB__c7hoWOjA4jY6Nc2ZjEuww7J-OWIZUE",
+# }  # add the token to check if user is already authorized
+#
+# data = {
+#     'username': 'kiran.dash@truuue.com',
+#     'password': 'django1234'
+# }
+#
+# regdata = {
+#     'username': 'kiran.dash17@truuue.com',
+#     'password': 'django1234',
+#     'password2': 'django1234'
+# }  # check for password match
 
 # r = requests.post(AUTH_ENDPOINT, data=data)
 
 # registers user and sends back token, username, expires
-reg = requests.post(REGISTER_ENDPOINT, data=json.dumps(regdata),
-                    headers=headers)
-
-print(reg.json())
-
-# alternate way to post with with headers
-r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
+# reg = requests.post(REGISTER_ENDPOINT, data=json.dumps(regdata),
+#                     headers=headers)
+#
+# print(reg.json())
+#
+# # alternate way to post with with headers
+# r = requests.post(AUTH_ENDPOINT, data=json.dumps(data), headers=headers)
 
 # print(r.json())  # should print response with token in console
 

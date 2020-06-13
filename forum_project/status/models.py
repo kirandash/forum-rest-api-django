@@ -33,3 +33,7 @@ class Status(models.Model):
         # Names to show in admin: By default - status, statuss
         verbose_name = 'Status post'
         verbose_name_plural = 'Status posts'
+
+    @property
+    def owner(self):
+        return self.user

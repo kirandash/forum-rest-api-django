@@ -2,6 +2,9 @@ import json
 # default django view
 from django.views.generic import View
 from django.shortcuts import get_object_or_404
+
+from accounts.api.permissions import IsOwnerOrReadOnly
+
 # authentication
 from rest_framework.authentication import SessionAuthentication
 # DRF View
@@ -28,7 +31,8 @@ def is_json(json_data):
 class StatusDetailAPIView(mixins.UpdateModelMixin,
                           mixins.DestroyModelMixin,
                           generics.RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly]
     # authentication_classes = [] # use global setting if commented
     # using default query set with API View
     queryset = Status.objects.all()
