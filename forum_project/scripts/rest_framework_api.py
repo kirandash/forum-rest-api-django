@@ -22,7 +22,7 @@ data = {
 }
 
 regdata = {
-    'username': 'kiran.dash12@truuue.com',
+    'username': 'kiran.dash15@truuue.com',
     'password': 'django1234',
     'password2': 'django1234'
 }  # check for password match

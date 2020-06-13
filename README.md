@@ -467,3 +467,9 @@
 
 ### 3.29 Get Context data
 1. Pass request data to serializer from view using get_serializer_context method
+
+### 3.30 Refactoring UserRegisterSerializer
+1. Remove get_token_response as we are already handling token and expires
+2. Add success message
+3. Make user's not active by default. (should be activated after email verification - not implemented)
+4. Run test script - check success message in terminal and check user status in admin: http://localhost:8000/admin/auth/user/15/change/
