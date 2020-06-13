@@ -21,10 +21,11 @@ class UserDetailAPIView(generics.RetrieveAPIView):
 
 class UserStatusAPIView(generics.ListAPIView):
     serializer_class = StatusInlineUserSerializer
+    # all APIs will use default pagination from main.py
+    # pagination_class = ForumAPIPagination
 
     def get_queryset(self):
         username = self.kwargs.get("username", None)
         if username is None:
             return Status.objects.none()
         return Status.objects.filter(user__username=username)
-

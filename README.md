@@ -519,3 +519,12 @@ Note: Concepts above are enought to create a fully functional APIs. All new conc
 5. Test at: http://localhost:8000/api/user/kiran/
 6. Also add limit to UserDetailSerializer
 7. Test at: http://localhost:8000/api/user/kiran/?limit=3 - should return 3 recent posts
+
+### 3.36 DRF Pagination to manage request load
+1. accounts/api/user/views.py
+    - UserStatusAPIView - add pagination_class (Create restconf/pagination.py file, include default pagination settings in main.py file)
+2. Test pagination at http://localhost:8000/api/user/kiran/status/ - should show multiple pages with each page having only 5 status
+3. Can go to next page with: http://localhost:8000/api/user/kiran/status/?page=2
+4. Docs: https://www.django-rest-framework.org/api-guide/pagination/
+5. Note: LimitOffsetPagination - for settings limit and offset. PageNumberPagination only shows limit but not offset.
+6. Limit offset test at: http://localhost:8000/api/user/kiran/status/?limit=2&offset=6
