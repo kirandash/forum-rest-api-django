@@ -452,3 +452,10 @@
 2. Add RegisterAPIView to accounts/api/views.py file
 3. Add views to urls.py file
 4. Test rest_framework_api.py 
+
+### 3.27 User Register Serializer
+1. Right now the RegisterAPIView doesn't use serializer and we manually have to mention all the fields. We are going to change that by adding a serializer to handle the fields for RegisterAPIView in a better way. 
+2. Create accounts/api/serializers.py file
+    - Create UserRegisterSerializer
+3. Use UserRegisterSerializer in accounts/api/views.py file
+4. Run test script for registration

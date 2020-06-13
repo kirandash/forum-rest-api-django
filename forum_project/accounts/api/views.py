@@ -1,8 +1,10 @@
 from django.contrib.auth import authenticate, get_user_model
 from django.db.models import Q
-from rest_framework import permissions
+from rest_framework import generics, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from .serializers import UserRegisterSerializer
 
 # Import custom payload
 from .utils import jwt_response_payload_handler
@@ -53,39 +55,45 @@ class AuthAPIView(APIView):
         return Response({"detail": "Invalid credentials"}, status=401)
 
 
-class RegisterAPIView(APIView):
-    permission_classes = [permissions.AllowAny]  # Must mention to overwrite
-    # default settings from main.py
+class RegisterAPIView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserRegisterSerializer
+    permission_classes = [permissions.AllowAny]
 
-    def post(self, request, *args, **kwargs):
-        print(request.user)
-        if request.user.is_authenticated:
-            return Response({'detail': 'You are already '
-                                       'registered and are authenticated'}
-                            , status=400)
-        data = request.data
-        username = data.get('username')  # username or email address
-        email = data.get('username')
-        password = data.get('password')
-        password2 = data.get('password2')
-        # user = authenticate(username=username, password=password)
-        qs = User.objects.filter(
-            Q(username__iexact=username) |
-            Q(email__iexact=username)
-        )
-        if password != password2:
-            return Response({"password": "Passwords must match"}, status=401)
-        if qs.exists():
-            return Response({"detail": "This user already exists"}, status=401)
-        else:
-            user = User.objects.create(username=username, email=email)
-            user.set_password(password)
-            user.save()
-            payload = jwt_payload_handler(user)
-            token = jwt_encode_handler(payload)
-            response = jwt_response_payload_handler(token, user,
-                                                    request=request)
-            # instead of sending token, we can also not send it and ask for
-            # email verification first
-            # return Response({'token': token})
-            return Response(response, status=201)
+
+# class RegisterAPIView(APIView):
+#     permission_classes = [permissions.AllowAny]  # Must mention to overwrite
+#     # default settings from main.py
+#
+#     def post(self, request, *args, **kwargs):
+#         print(request.user)
+#         if request.user.is_authenticated:
+#             return Response({'detail': 'You are already '
+#                                        'registered and are authenticated'}
+#                             , status=400)
+#         data = request.data
+#         username = data.get('username')  # username or email address
+#         email = data.get('username')
+#         password = data.get('password')
+#         password2 = data.get('password2')
+#         # user = authenticate(username=username, password=password)
+#         qs = User.objects.filter(
+#             Q(username__iexact=username) |
+#             Q(email__iexact=username)
+#         )
+#         if password != password2:
+#             return Response({"password": "Passwords must match"}, status=401)
+#         if qs.exists():
+#             return Response({"detail": "This user already exists"}, status=401)
+#         else:
+#             user = User.objects.create(username=username, email=email)
+#             user.set_password(password)
+#             user.save()
+#             payload = jwt_payload_handler(user)
+#             token = jwt_encode_handler(payload)
+#             response = jwt_response_payload_handler(token, user,
+#                                                     request=request)
+#             # instead of sending token, we can also not send it and ask for
+#             # email verification first
+#             # return Response({'token': token})
+#             return Response(response, status=201)
