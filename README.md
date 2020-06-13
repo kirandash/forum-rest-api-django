@@ -473,3 +473,14 @@
 2. Add success message
 3. Make user's not active by default. (should be activated after email verification - not implemented)
 4. Run test script - check success message in terminal and check user status in admin: http://localhost:8000/admin/auth/user/15/change/
+
+### 3.31 Custom Permissions for views
+1. Django by default has permissions ex: AllowAny, AllowAll, AuthenticatedOnly. We will create custom permissions for BlacklistPermission, IsOwnerOrReadOnly, AnonPermissionOnly
+2. Docs: Permissions examples:
+    - https://www.django-rest-framework.org/api-guide/permissions/#examples
+3. Create accounts/api/permissions.py
+    - copy BlacklistPermission, IsOwnerOrReadOnly example from doc.
+    - Create AnonPermissionOnly for non authenticated users only
+4. views.py
+    - Add AnonPermissionOnly to RegisterAPIView, AuthAPIView. Since the API should be for anonymous users only. Not for all.
+5. Test accessing register endpoint with existing token.

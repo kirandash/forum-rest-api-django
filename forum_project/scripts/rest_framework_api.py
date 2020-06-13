@@ -13,7 +13,7 @@ image_path = os.path.join(os.getcwd(), "testimage.png")
 headers = {
     "Content-Type": "application/json",
     # to check if you are already authenticated
-    # "Authorization": "JWT " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImtpcmFuIiwiZXhwIjoxNTkxOTc1MDA3LCJlbWFpbCI6IiIsIm9yaWdfaWF0IjoxNTkxOTc0NzA3fQ.Di_cpg9gwEkbbki4Q1WLUextXK3qwB0iixHaRl3VLZY",
+    "Authorization": "JWT " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNiwidXNlcm5hbWUiOiJraXJhbi5kYXNoMTZAdHJ1dXVlLmNvbSIsImV4cCI6MTU5MjA0MjIwMCwiZW1haWwiOiJkamFuZ28xMjM0Iiwib3JpZ19pYXQiOjE1OTIwNDE5MDB9.oA8ARubVhBB__c7hoWOjA4jY6Nc2ZjEuww7J-OWIZUE",
 }  # add the token to check if user is already authorized
 
 data = {
@@ -22,7 +22,7 @@ data = {
 }
 
 regdata = {
-    'username': 'kiran.dash15@truuue.com',
+    'username': 'kiran.dash17@truuue.com',
     'password': 'django1234',
     'password2': 'django1234'
 }  # check for password match
