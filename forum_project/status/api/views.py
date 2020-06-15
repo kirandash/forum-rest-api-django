@@ -68,20 +68,25 @@ class StatusAPIView(mixins.CreateModelMixin,
     # how to login
     # authentication_classes = [SessionAuthentication]  # Oauth, JWT
     # using default query set with API View
-    # queryset = Status.objects.all()
+    queryset = Status.objects.all()
     serializer_class = StatusSerializer
+    # same as filtering qs in get_queryset with username
+    # by default, all fields will be available for search & order. Limit that
+    # with below settings
+    search_fields = ('user__username', 'content', 'user__email')
+    ordering_fields = ('user__username', 'timestamp')
 
     # GET call for List view
     # overwriting qs by filtering with a param q
     # search overwrite: Test: /api/status/?q=delete
-    def get_queryset(self):
-        request = self.request
-        print(request.user)  # Anonymous user
-        qs = Status.objects.all()
-        query = request.GET.get('q')
-        if query is not None:
-            qs = qs.filter(content__icontains=query)
-        return qs
+    # def get_queryset(self):
+    #     request = self.request
+    #     print(request.user)  # Anonymous user
+    #     qs = Status.objects.all()
+    #     query = request.GET.get('q')
+    #     if query is not None:
+    #         qs = qs.filter(content__icontains=query)
+    #     return qs
 
     def post(self, request, *args, **kwargs):
         # call create method of CreateModelMixin

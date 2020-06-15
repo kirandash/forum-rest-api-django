@@ -490,7 +490,7 @@
 2. modify status/models.py - to create owner property and status/api/views.py - to import permission
 3. Test: python rest_framework_api.py. Check that user can't modify other user's posts.
 
-Note: Concepts above are enought to create a fully functional APIs. All new concepts are for improving the API.
+Note: Concepts above are enough to create a fully functional APIs. All new concepts are for improving the API.
 
 ### 3.33 Nested Serializer - for user and add uri info
 1. Right now the status detail api endpoint returns only user id. We will customize it to add more info like: username etc.
@@ -528,3 +528,13 @@ Note: Concepts above are enought to create a fully functional APIs. All new conc
 4. Docs: https://www.django-rest-framework.org/api-guide/pagination/
 5. Note: LimitOffsetPagination - for settings limit and offset. PageNumberPagination only shows limit but not offset.
 6. Limit offset test at: http://localhost:8000/api/user/kiran/status/?limit=2&offset=6
+
+### 3.37 Search Filter & Ordering using DRF
+1. Add settings in main.py file
+2. Add search_fields (username, content) to StatusAPIView
+3. Test at: http://localhost:8000/api/status/ - new filter button should be available.
+4. Search query: http://localhost:8000/api/status/?search=kiran -- search username and content
+5. can remove the get queryset filter implemented earlier with q.
+6. Filter with ordering: http://localhost:8000/api/status/?ordering=-timestamp&search=kiran
+7. Add search and ordering filter to user status view:
+    - http://localhost:8000/api/user/kiran/status/?search=ttt

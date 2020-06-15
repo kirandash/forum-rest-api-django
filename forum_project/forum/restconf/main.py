@@ -11,7 +11,13 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination'
-    'DEFAULT_PAGINATION_CLASS': 'forum.restconf.pagination.ForumAPIPagination'
+    'DEFAULT_PAGINATION_CLASS': 'forum.restconf.pagination.ForumAPIPagination',
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter'
+    ),
+    'SEARCH_PARAM': 'search',
+    'ORDERING_PARAM': 'ordering'
 }
 
 JWT_AUTH = {
