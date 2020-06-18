@@ -560,3 +560,16 @@ such as GenericForeignKey.
 4. Accessing indirect models eg: UserDetailSerializer using a related name (source set)
     - access statuses
     - Test at: http://localhost:8000/api/user/kiran/
+
+### 3.40 Automated Testing
+1. Docs:
+    - Django: https://docs.djangoproject.com/en/3.0/topics/testing/overview/
+    - DRF: https://www.django-rest-framework.org/api-guide/testing/#testing
+2. accounts/tests.py:
+    - Create test case: test_created_user
+3. status/tests.py:
+    - Create test case: 
+4. Run test: `python manage.py test`
+5. Note: 
+    - pre-requisites for all tests should be written in setUp fn.
+    - test fns should start with `test_`
