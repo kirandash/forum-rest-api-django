@@ -1,5 +1,5 @@
 from rest_framework import serializers
-
+from rest_framework.reverse import reverse as api_reverse
 from accounts.api.serializers import UserPublicSerializer
 from status.models import Status
 
@@ -11,24 +11,6 @@ from status.models import Status
 #
 #     # Note that we don't have save() method for plain serializers, it is only
 #     # limited to ModelSerializer
-
-class StatusInlineUserSerializer(serializers.ModelSerializer):
-    uri = serializers.SerializerMethodField(read_only=True)
-    user = UserPublicSerializer(read_only=True)
-    # serializing model data
-
-    class Meta:
-        model = Status
-        fields = [
-            'uri',
-            'id',
-            'user',
-            'content',
-            'image'
-        ]
-
-    def get_uri(self, obj):
-        return "/api/status/{id}".format(id=obj.id)
 
 
 class StatusSerializer(serializers.ModelSerializer):
@@ -48,7 +30,10 @@ class StatusSerializer(serializers.ModelSerializer):
         read_only_fields = ['user']  # only allowed for GET calls
 
     def get_uri(self, obj):
-        return "/api/status/{id}".format(id=obj.id)
+        request = self.context.get('request')
+        # return "/api/status/{id}".format(id=obj.id)
+        return api_reverse('api-status:detail', kwargs={"id": obj.id},
+                           request=request)
 
     def validate_content(self, value):
         # Fn to validate content of serializer - field level validation
@@ -65,3 +50,26 @@ class StatusSerializer(serializers.ModelSerializer):
         if content is None and image is None:
             raise serializers.ValidationError("content or image is required.")
         return data
+
+
+# class StatusInlineUserSerializer(serializers.ModelSerializer):
+class StatusInlineUserSerializer(StatusSerializer):
+    uri = serializers.SerializerMethodField(read_only=True)
+    user = UserPublicSerializer(read_only=True)
+    # serializing model data
+
+    class Meta:
+        model = Status
+        fields = [
+            'uri',
+            'id',
+            'user',
+            'content',
+            'image'
+        ]
+
+    # def get_uri(self, obj):
+    #     request = self.context.get('request')
+    #     # return "/api/status/{id}".format(id=obj.id)
+    #     return api_reverse('api-status:detail', kwargs={"id": obj.id},
+    #                        request=request)

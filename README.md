@@ -538,3 +538,13 @@ Note: Concepts above are enough to create a fully functional APIs. All new conce
 6. Filter with ordering: http://localhost:8000/api/status/?ordering=-timestamp&search=kiran
 7. Add search and ordering filter to user status view:
     - http://localhost:8000/api/user/kiran/status/?search=ttt
+
+### 3.38 Reverse URLs with DRF to create full URIs in endpoints
+1. accounts/api/user/serializers.py:
+    - Modify get_uri fn to return accurate urls using DRF reverse in UserDetailSerializer.
+2. forum/urls.py: 
+    - Add namespace to status and users endpoint
+3. Make sure app_name is given for respective namespaces in user/urls.py, status/api/urls.py
+4. Test at: http://localhost:8000/api/user/kiran/
+5. Add the same for status/api/serializers.py
+6. Test at: http://localhost:8000/api/status/

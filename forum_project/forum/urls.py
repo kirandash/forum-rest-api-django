@@ -32,10 +32,10 @@ urlpatterns = [
     path('dummy/mixin/', JsonDummyCBVWithMixin.as_view()),
     path('dummy/serializer/detail/', SerializedDetailView.as_view()),
     path('dummy/serializer/list/', SerializedListView.as_view()),
-    path('api/status/', include('status.api.urls')),
+    # if namespace is specified, we must mention app_name as well
+    path('api/status/', include('status.api.urls', namespace='api-status')),
     # path('api/auth/jwt/', obtain_jwt_token),
     # path('api/auth/jwt/refresh/', refresh_jwt_token),
     path('api/auth/', include('accounts.api.urls')),
-    path('api/user/', include('accounts.api.user.urls',
-                              namespace='api-user')),
+    path('api/user/', include('accounts.api.user.urls', namespace='api-user')),
 ]

@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+# same as django reverse bt wt 1 extra dimension - can add domain name to url
+from rest_framework.reverse import reverse as api_reverse
 
 from status.api.serializers import StatusInlineUserSerializer
 
@@ -24,7 +26,13 @@ class UserDetailSerializer(serializers.ModelSerializer):
         ]
 
     def get_uri(self, obj):
-        return "/api/users/{id}/".format(id=obj.id)
+        # return "/api/users/{id}/".format(id=obj.id)
+        # return api_reverse("<namespace>:<view_name>",
+        #                    kwargs={"username": obj.username})
+        request = self.context.get('request')
+        return api_reverse("api-user:detail",
+                           kwargs={"username": obj.username},
+                           request=request)
 
     def get_status(self, obj):
         request = self.context.get('request')
@@ -39,9 +47,13 @@ class UserDetailSerializer(serializers.ModelSerializer):
         qs = obj.status_set.all().order_by("-timestamp")  # [:10]
         data = {
             'uri': self.get_uri(obj) + "status/",
-            'last': StatusInlineUserSerializer(qs.first()).data,
+            'last': StatusInlineUserSerializer(
+                qs.first(),
+                context={'request': request}).data,
             # 'recent': StatusInlineUserSerializer(qs[:10], many=True).data
-            'recent': StatusInlineUserSerializer(qs[:limit], many=True).data
+            'recent': StatusInlineUserSerializer(
+                qs[:limit],
+                context={'request': request}, many=True).data
         }
         return data
 
