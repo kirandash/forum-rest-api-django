@@ -581,3 +581,7 @@ such as GenericForeignKey.
     - Add test cases for : test_creating_user, test_register_user_api_fail, test_register_user_api, test_login_user_api
 3. forum/urls.py and api/urls.py - Make sure namespace and url names are added
 4. DRF Status codes: https://www.django-rest-framework.org/api-guide/status-codes/
+
+### 3.42 Testing status API
+1. status/api/tests.py file
+    - Add test cases

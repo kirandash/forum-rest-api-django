@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class StatusTestCase(APITestCase):  # unit test
+class UserAPITestCase(APITestCase):  # unit test
     def setUp(self):
         """Set up configuration to run before each test case"""
         # Data changes in test cases will be erased after running test

@@ -13,7 +13,7 @@ app_name = 'status'
 
 urlpatterns = [
     # path('', StatusListSearchAPIView.as_view()),
-    path('', StatusAPIView.as_view()),
+    path('', StatusAPIView.as_view(), name='list'),
     # path('create/', StatusCreateAPIView.as_view()),
     # Add url name for reverse implementation
     path('<int:id>/', StatusDetailAPIView.as_view(), name='detail'),
