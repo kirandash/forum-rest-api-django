@@ -548,3 +548,15 @@ Note: Concepts above are enough to create a fully functional APIs. All new conce
 4. Test at: http://localhost:8000/api/user/kiran/
 5. Add the same for status/api/serializers.py
 6. Test at: http://localhost:8000/api/status/
+
+### 3.39 Serializer Related Fields
+1. Docs: Serializer Relations: https://www.django-rest-framework.org/api-guide/relations/#serializer-relations
+2. Relational fields are used to represent model relationships. They can be applied to ForeignKey, 
+ManyToManyField and OneToOneField relationships, as well as to reverse relationships, and custom relationships 
+such as GenericForeignKey.
+3. For endpoint: http://localhost:8000/api/status/
+    - Add user_id, user_link, username in StatusSerializer
+    - Note: user obj is directly accessible to Status model here
+4. Accessing indirect models eg: UserDetailSerializer using a related name (source set)
+    - access statuses
+    - Test at: http://localhost:8000/api/user/kiran/

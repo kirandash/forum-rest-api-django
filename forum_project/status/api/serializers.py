@@ -16,6 +16,19 @@ from status.models import Status
 class StatusSerializer(serializers.ModelSerializer):
     uri = serializers.SerializerMethodField(read_only=True)
     user = UserPublicSerializer(read_only=True)
+    user_id = serializers.PrimaryKeyRelatedField(source='user',
+                                                 read_only=True)
+    user_link = serializers.HyperlinkedRelatedField(
+        source='user',
+        lookup_field='username',
+        view_name='api-user:detail',
+        read_only=True
+    )
+    username = serializers.SlugRelatedField(
+        source='user',
+        read_only=True,
+        slug_field='username'
+    )
 
     # serializing model data
     class Meta:
@@ -24,6 +37,9 @@ class StatusSerializer(serializers.ModelSerializer):
             'uri',
             'id',
             'user',
+            'user_id',
+            'user_link',
+            'username',
             'content',
             'image'
         ]

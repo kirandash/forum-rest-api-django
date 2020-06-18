@@ -13,6 +13,16 @@ class UserDetailSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField(read_only=True)
     # status_uri = serializers.SerializerMethodField(read_only=True)
     # recent_status_list = serializers.SerializerMethodField(read_only=True)
+    statuses = serializers.HyperlinkedRelatedField(
+        source='status_set',  # Status.objects.filter(user=user)
+        # queryset=Status.objects.all()[:5],  # limit no of status to show
+        many=True,
+        read_only=True,
+        lookup_field='id',
+        view_name='api-status:detail',
+    )
+    statuses_inline = StatusInlineUserSerializer(source='status_set',
+                                                 many=True, read_only=True)
 
     class Meta:
         model = User
@@ -21,6 +31,8 @@ class UserDetailSerializer(serializers.ModelSerializer):
             'username',
             'uri',
             'status',
+            'statuses',
+            'statuses_inline',
             # 'status_uri',
             # 'recent_status_list'
         ]
