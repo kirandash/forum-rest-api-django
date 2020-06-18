@@ -598,6 +598,7 @@ such as GenericForeignKey.
 2. ViewSets:
     - https://www.django-rest-framework.org/api-guide/viewsets/
     - Try to avoid ViewSets if possible. It adds extra complexity to simpler concept
+    - Better to use Generic Viewsets like we did above - raw and simple to use
 3. Parsers:
     - https://www.django-rest-framework.org/api-guide/parsers/
     - The default JSON parser is good enough. But can use DRF parser if reqd
