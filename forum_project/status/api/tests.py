@@ -1,3 +1,8 @@
+import os
+import shutil  # shell utility module
+import tempfile
+from PIL import Image  # pip install pillow
+
 # reverse for generating API endpoints for test
 # from django.urls import reverse
 from rest_framework.reverse import reverse as api_reverse
@@ -7,7 +12,14 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 
 from django.contrib.auth import get_user_model
+from django.conf import settings
+from rest_framework_jwt.settings import api_settings
+
 from status.models import Status
+
+jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
 User = get_user_model()
 
 
@@ -51,6 +63,21 @@ class StatusAPITestCase(APITestCase):  # unit test
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Status.objects.count(), 2)
+        return response.data
+
+    def test_create_empty_item(self):
+        """Test creating a status item with no content and image"""
+        # Set token
+        self.status_user_token()
+
+        # Test status - Create
+        url = api_reverse('api-status:list')
+        data = {
+            'content': '',
+            'image': ''
+        }
+        response = self.client.post(url, data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         return response.data
 
     def test_status_create(self):
@@ -104,3 +131,80 @@ class StatusAPITestCase(APITestCase):  # unit test
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(Status.objects.count(), 1)
+
+    def test_status_create_with_image(self):
+        """Test if status create with img works successfully using API"""
+        self.status_user_token()
+        url = api_reverse('api-status:list')
+        # (w, h) = (800, 1280)
+        # (R, G, B) = (255, 255, 255)
+        # create a dummy image item - will be created in media-root
+        image_item = Image.new('RGB', (800, 1280), (255, 255, 255))
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+        image_item.save(tmp_file, format='JPEG')
+        # rb: read bytes - open image file data
+        with open(tmp_file.name, 'rb') as file_obj:
+            data = {
+                'content': 'Some fun content',
+                'image': file_obj
+            }
+            response = self.client.post(url, data, format='multipart')
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(Status.objects.count(), 2)
+            # print(response.data)
+            # check if image url is returned in response after upload
+            img_data = response.data.get('image')
+            self.assertNotEqual(img_data, None)
+
+        # After testing, image is removed from db but still stays in media-root
+        temp_img_dir = os.path.join(settings.MEDIA_ROOT, 'status', 'kiran')
+
+        if os.path.exists(temp_img_dir):
+            # removes the entire directory. check later to remove only file
+            shutil.rmtree(temp_img_dir)
+
+    def test_status_create_with_image_no_content(self):
+        """Test if status create with img and no content works"""
+        self.status_user_token()
+        url = api_reverse('api-status:list')
+        # (w, h) = (800, 1280)
+        # (R, G, B) = (255, 255, 255)
+        # create a dummy image item - will be created in media-root
+        image_item = Image.new('RGB', (800, 1280), (255, 255, 255))
+        tmp_file = tempfile.NamedTemporaryFile(suffix='.jpg')
+        image_item.save(tmp_file, format='JPEG')
+        # rb: read bytes - open image file data
+        with open(tmp_file.name, 'rb') as file_obj:
+            data = {
+                'content': '',
+                'image': file_obj
+            }
+            response = self.client.post(url, data, format='multipart')
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+            self.assertEqual(Status.objects.count(), 2)
+        # After testing, image is removed from db but still stays in media-root
+        temp_img_dir = os.path.join(settings.MEDIA_ROOT, 'status', 'kiran')
+
+        if os.path.exists(temp_img_dir):
+            # removes the entire directory. check later to remove only file
+            shutil.rmtree(temp_img_dir)
+
+    def test_other_user_permissions_api(self):
+        """Test accessing Status of other user"""
+        data = self.create_item()
+        data_id = data.get("id")
+        user = User.objects.create(username='kirandash')
+        payload = jwt_payload_handler(user)
+        token = jwt_encode_handler(payload)
+        self.client.credentials(HTTP_AUTHORIZATION='JWT ' + token)
+        rud_url = api_reverse('api-status:detail', kwargs={"id": data_id})
+        rud_data = {
+            'content': 'smashing'
+        }
+        get_ = self.client.get(rud_url, format='json')
+        put_ = self.client.put(rud_url, rud_data, format='json')
+        delete_ = self.client.delete(rud_url, format='json')
+
+        self.assertEqual(get_.status_code, status.HTTP_200_OK)
+        self.assertEqual(put_.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(delete_.status_code, status.HTTP_403_FORBIDDEN)

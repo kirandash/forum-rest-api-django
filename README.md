@@ -585,3 +585,7 @@ such as GenericForeignKey.
 ### 3.42 Testing status API
 1. status/api/tests.py file
     - Add test cases
+
+### 3.43 Testing with Temporary Image
+1. status/api/tests.py file
+    - Add test cases
