@@ -589,3 +589,15 @@ such as GenericForeignKey.
 ### 3.43 Testing with Temporary Image
 1. status/api/tests.py file
     - Add test cases
+
+### 3.44 More concepts
+1. Throttling: 
+    - limiting no of requests a client can make
+    - https://www.django-rest-framework.org/api-guide/throttling/
+    - Best to implement for 3rd party APIs
+2. ViewSets:
+    - https://www.django-rest-framework.org/api-guide/viewsets/
+    - Try to avoid ViewSets if possible. It adds extra complexity to simpler concept
+3. Parsers:
+    - https://www.django-rest-framework.org/api-guide/parsers/
+    - The default JSON parser is good enough. But can use DRF parser if reqd
