@@ -36,6 +36,6 @@ urlpatterns = [
     path('api/status/', include('status.api.urls', namespace='api-status')),
     # path('api/auth/jwt/', obtain_jwt_token),
     # path('api/auth/jwt/refresh/', refresh_jwt_token),
-    path('api/auth/', include('accounts.api.urls')),
+    path('api/auth/', include('accounts.api.urls', namespace='api-auth')),
     path('api/user/', include('accounts.api.user.urls', namespace='api-user')),
 ]

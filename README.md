@@ -573,3 +573,11 @@ such as GenericForeignKey.
 5. Note: 
     - pre-requisites for all tests should be written in setUp fn.
     - test fns should start with `test_`
+
+### 3.41 Testing User API
+1. Will test user creation using API endpoint and not just the Django model.
+2. accounts/api/test_user_api.py file
+    - Note: file name should start test viz test_user_api.py or called tests.py.
+    - Add test cases for : test_creating_user, test_register_user_api_fail, test_register_user_api, test_login_user_api
+3. forum/urls.py and api/urls.py - Make sure namespace and url names are added
+4. DRF Status codes: https://www.django-rest-framework.org/api-guide/status-codes/

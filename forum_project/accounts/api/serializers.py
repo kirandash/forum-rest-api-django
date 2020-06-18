@@ -112,7 +112,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     # overwriting default user create method to save password
     def create(self, validated_data):
-        print(validated_data)
+        # print(validated_data)
         # user_obj = User.objects.create(
         #             username=validated_data.get('username'),
         #             email=validated_data.get('email'))

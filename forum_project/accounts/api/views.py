@@ -29,7 +29,7 @@ class AuthAPIView(APIView):
     # default settings from main.py
 
     def post(self, request, *args, **kwargs):
-        print(request.user)
+        # print(request.user)
         if request.user.is_authenticated:
             return Response({'detail': 'You are already authenticated'}
                             , status=400)
@@ -45,7 +45,7 @@ class AuthAPIView(APIView):
             user_obj = qs.first()
             if user_obj.check_password(password):  # authenticating
                 user = user_obj
-                print(user)
+                # print(user)
                 # From doc - Creating a new token manually
                 payload = jwt_payload_handler(user)
                 token = jwt_encode_handler(payload)
